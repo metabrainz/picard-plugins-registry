@@ -54,8 +54,14 @@ registry plugin add https://github.com/user/plugin-name \
 Refresh plugin metadata from MANIFEST.toml:
 
 ```bash
+# Update from default ref (first ref or main)
 registry plugin update plugin-id
+
+# Update from specific ref
+registry plugin update plugin-id --ref develop
 ```
+
+**Note:** The UUID in MANIFEST.toml must match the registry. If it has changed, the update will fail with an error.
 
 ### Edit a Plugin
 
@@ -66,7 +72,10 @@ registry plugin edit plugin-id --trust official
 # Change categories
 registry plugin edit plugin-id --categories metadata,ui
 
-# Change both
+# Change git URL (when plugin permanently moves)
+registry plugin edit plugin-id --git-url https://github.com/newuser/new-repo
+
+# Change multiple fields
 registry plugin edit plugin-id --trust trusted --categories metadata
 ```
 
@@ -78,8 +87,38 @@ When a plugin moves to a new repository URL, add a redirect so users with the ol
 # Add redirect
 registry plugin redirect plugin-id https://github.com/olduser/old-repo
 
+# List redirects
+registry plugin redirect plugin-id --list
+
 # Remove redirect
 registry plugin redirect plugin-id https://github.com/olduser/old-repo --remove
+```
+
+### Manage Plugin Refs
+
+Refs allow plugins to support multiple git branches for different Picard versions:
+
+```bash
+# Add a ref
+registry ref add plugin-id develop \
+    --description "Development branch" \
+    --min-api-version "4.0"
+
+# Add ref with version range
+registry ref add plugin-id picard-v3 \
+    --description "Picard 3.x compatible" \
+    --min-api-version "3.0" \
+    --max-api-version "3.99"
+
+# Edit ref (update description, API versions, or rename)
+registry ref edit plugin-id develop --max-api-version "4.99"
+registry ref edit plugin-id develop --name beta
+
+# List refs for a plugin
+registry ref list plugin-id
+
+# Remove a ref
+registry ref remove plugin-id develop
 ```
 
 ### List Plugins

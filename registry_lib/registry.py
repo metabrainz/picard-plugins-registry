@@ -76,12 +76,7 @@ class Registry:
 
         Args:
             plugin: Plugin dict with all required fields
-
-        Raises:
-            ValueError: If plugin already exists
         """
-        if self.find_plugin(plugin["id"]):
-            raise ValueError(f"Plugin {plugin['id']} already exists")
         self.data["plugins"].append(plugin)
 
     def remove_plugin(self, plugin_id):

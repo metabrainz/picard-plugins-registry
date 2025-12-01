@@ -9,6 +9,23 @@ from registry_lib.registry import Registry
 from registry_lib.utils import now_iso8601
 
 
+def get_plugin_or_exit(registry, plugin_id):
+    """Get plugin from registry or exit with error.
+
+    Args:
+        registry: Registry instance
+        plugin_id: Plugin ID to find
+
+    Returns:
+        dict: Plugin entry
+    """
+    plugin = registry.find_plugin(plugin_id)
+    if not plugin:
+        print(f"Error: Plugin {plugin_id} not found", file=sys.stderr)
+        sys.exit(1)
+    return plugin
+
+
 def cmd_validate(args):
     """Validate registry file."""
     registry = Registry(args.registry)
@@ -69,14 +86,19 @@ def cmd_stats(args):
 
 
 def cmd_plugin_redirect(args):
-    """Add or remove redirect for plugin that moved URLs."""
+    """Add, remove, or list redirects for plugin that moved URLs."""
     registry = Registry(args.registry)
-    plugin = registry.find_plugin(args.plugin_id)
-    if not plugin:
-        print(f"Error: Plugin {args.plugin_id} not found", file=sys.stderr)
-        sys.exit(1)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
 
-    if args.remove:
+    if args.list:
+        # List redirects
+        redirects = plugin.get('redirect_from', [])
+        if not redirects:
+            print("No redirects defined")
+        else:
+            for url in redirects:
+                print(f"{url} -> {plugin['git_url']}")
+    elif args.remove:
         # Remove URL from redirect_from
         if 'redirect_from' in plugin and args.old_url in plugin['redirect_from']:
             plugin['redirect_from'].remove(args.old_url)
@@ -102,19 +124,140 @@ def cmd_plugin_redirect(args):
         print(f"Added redirect: {args.old_url} -> {plugin['git_url']}")
 
 
+def cmd_plugin_ref_add(args):
+    """Add ref to plugin."""
+    registry = Registry(args.registry)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
+
+    # Initialize refs if not present
+    if 'refs' not in plugin:
+        plugin['refs'] = []
+
+    # Check if ref already exists
+    for ref in plugin['refs']:
+        if ref['name'] == args.ref_name:
+            print(f"Error: Ref {args.ref_name} already exists", file=sys.stderr)
+            sys.exit(1)
+
+    # Build ref entry
+    ref = {"name": args.ref_name}
+    if args.description:
+        ref["description"] = args.description
+    if args.min_api_version:
+        ref["min_api_version"] = args.min_api_version
+    if args.max_api_version:
+        ref["max_api_version"] = args.max_api_version
+
+    plugin['refs'].append(ref)
+    plugin["updated_at"] = now_iso8601()
+    registry.save()
+    print(f"Added ref: {args.ref_name}")
+
+
+def cmd_plugin_ref_edit(args):
+    """Edit ref in plugin."""
+    registry = Registry(args.registry)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
+
+    # Find ref
+    ref = None
+    for r in plugin.get('refs', []):
+        if r['name'] == args.ref_name:
+            ref = r
+            break
+
+    if not ref:
+        print(f"Error: Ref {args.ref_name} not found", file=sys.stderr)
+        sys.exit(1)
+
+    # Check if new name conflicts
+    if args.new_name and args.new_name != args.ref_name:
+        for r in plugin.get('refs', []):
+            if r['name'] == args.new_name:
+                print(f"Error: Ref {args.new_name} already exists", file=sys.stderr)
+                sys.exit(1)
+        ref["name"] = args.new_name
+
+    # Update fields
+    if args.description is not None:
+        if args.description:
+            ref["description"] = args.description
+        elif "description" in ref:
+            del ref["description"]
+    if args.min_api_version:
+        ref["min_api_version"] = args.min_api_version
+    if args.max_api_version:
+        ref["max_api_version"] = args.max_api_version
+
+    plugin["updated_at"] = now_iso8601()
+    registry.save()
+    print(f"Updated ref: {args.new_name if args.new_name else args.ref_name}")
+
+
+def cmd_plugin_ref_remove(args):
+    """Remove ref from plugin."""
+    registry = Registry(args.registry)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
+
+    if 'refs' not in plugin:
+        print("Error: Plugin has no refs", file=sys.stderr)
+        sys.exit(1)
+
+    # Remove ref
+    original_len = len(plugin['refs'])
+    plugin['refs'] = [r for r in plugin['refs'] if r['name'] != args.ref_name]
+
+    if len(plugin['refs']) == original_len:
+        print(f"Error: Ref {args.ref_name} not found", file=sys.stderr)
+        sys.exit(1)
+
+    # Remove refs field if empty
+    if not plugin['refs']:
+        del plugin['refs']
+
+    plugin["updated_at"] = now_iso8601()
+    registry.save()
+    print(f"Removed ref: {args.ref_name}")
+
+
+def cmd_plugin_ref_list(args):
+    """List refs for plugin."""
+    registry = Registry(args.registry)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
+
+    refs = plugin.get('refs', [])
+    if not refs:
+        print("No refs defined (using default: main)")
+        return
+
+    for ref in refs:
+        parts = [ref['name']]
+        if 'description' in ref:
+            parts.append(f"- {ref['description']}")
+        if 'min_api_version' in ref or 'max_api_version' in ref:
+            min_v = ref.get('min_api_version', '')
+            max_v = ref.get('max_api_version', '')
+            if min_v and max_v:
+                parts.append(f"(API {min_v}-{max_v})")
+            elif min_v:
+                parts.append(f"(API {min_v}+)")
+            elif max_v:
+                parts.append(f"(API <={max_v})")
+        print(' '.join(parts))
+
+
 def cmd_plugin_edit(args):
     """Edit plugin in registry."""
     registry = Registry(args.registry)
-    plugin = registry.find_plugin(args.plugin_id)
-    if not plugin:
-        print(f"Error: Plugin {args.plugin_id} not found", file=sys.stderr)
-        sys.exit(1)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
 
     # Update fields if provided
     if args.trust:
         plugin["trust_level"] = args.trust
     if args.categories:
         plugin["categories"] = args.categories.split(',')
+    if args.git_url:
+        plugin["git_url"] = args.git_url
 
     plugin["updated_at"] = now_iso8601()
     registry.save()
@@ -133,7 +276,7 @@ def cmd_plugin_add(args):
 def cmd_plugin_update(args):
     """Update plugin metadata from MANIFEST."""
     registry = Registry(args.registry)
-    plugin = update_plugin(registry, args.plugin_id)
+    plugin = update_plugin(registry, args.plugin_id, ref=args.ref)
     registry.save()
     print(f"Updated plugin: {plugin['name']} ({plugin['id']})")
 
@@ -187,10 +330,7 @@ def cmd_plugin_list(args):
 def cmd_plugin_show(args):
     """Show plugin details."""
     registry = Registry(args.registry)
-    plugin = registry.find_plugin(args.plugin_id)
-    if not plugin:
-        print(f"Error: Plugin {args.plugin_id} not found", file=sys.stderr)
-        sys.exit(1)
+    plugin = get_plugin_or_exit(registry, args.plugin_id)
 
     print(f"ID: {plugin['id']}")
     print(f"Name: {plugin['name']}")
@@ -293,6 +433,7 @@ def main():
     # plugin update
     update_parser = plugin_subparsers.add_parser("update", help="Update plugin metadata from MANIFEST")
     update_parser.add_argument("plugin_id", help="Plugin ID")
+    update_parser.add_argument("--ref", help="Git ref to fetch MANIFEST from (default: first ref or main)")
     update_parser.set_defaults(func=cmd_plugin_update)
 
     # plugin edit
@@ -300,13 +441,15 @@ def main():
     edit_parser.add_argument("plugin_id", help="Plugin ID")
     edit_parser.add_argument("--trust", choices=["official", "trusted", "community"], help="Trust level")
     edit_parser.add_argument("--categories", help="Plugin categories (comma-separated)")
+    edit_parser.add_argument("--git-url", help="Git repository URL")
     edit_parser.set_defaults(func=cmd_plugin_edit)
 
     # plugin redirect
-    redirect_parser = plugin_subparsers.add_parser("redirect", help="Add URL redirect for moved plugin")
+    redirect_parser = plugin_subparsers.add_parser("redirect", help="Manage URL redirects for moved plugin")
     redirect_parser.add_argument("plugin_id", help="Plugin ID")
-    redirect_parser.add_argument("old_url", help="Old git URL to redirect from")
+    redirect_parser.add_argument("old_url", nargs="?", help="Old git URL to redirect from")
     redirect_parser.add_argument("--remove", action="store_true", help="Remove redirect instead of adding")
+    redirect_parser.add_argument("--list", action="store_true", help="List all redirects")
     redirect_parser.set_defaults(func=cmd_plugin_redirect)
 
     # plugin remove
@@ -325,6 +468,36 @@ def main():
     show_parser = plugin_subparsers.add_parser("show", help="Show plugin details")
     show_parser.add_argument("plugin_id", help="Plugin ID")
     show_parser.set_defaults(func=cmd_plugin_show)
+
+    # Ref commands
+    ref_parser = subparsers.add_parser("ref", help="Plugin ref operations")
+    ref_subparsers = ref_parser.add_subparsers(dest="ref_command", required=True)
+
+    ref_add_parser = ref_subparsers.add_parser("add", help="Add ref to plugin")
+    ref_add_parser.add_argument("plugin_id", help="Plugin ID")
+    ref_add_parser.add_argument("ref_name", help="Ref name (e.g., main, develop)")
+    ref_add_parser.add_argument("--description", help="Ref description")
+    ref_add_parser.add_argument("--min-api-version", help="Minimum API version")
+    ref_add_parser.add_argument("--max-api-version", help="Maximum API version")
+    ref_add_parser.set_defaults(func=cmd_plugin_ref_add)
+
+    ref_edit_parser = ref_subparsers.add_parser("edit", help="Edit plugin ref")
+    ref_edit_parser.add_argument("plugin_id", help="Plugin ID")
+    ref_edit_parser.add_argument("ref_name", help="Current ref name")
+    ref_edit_parser.add_argument("--name", dest="new_name", help="New ref name")
+    ref_edit_parser.add_argument("--description", help="Ref description (empty string to remove)")
+    ref_edit_parser.add_argument("--min-api-version", help="Minimum API version")
+    ref_edit_parser.add_argument("--max-api-version", help="Maximum API version")
+    ref_edit_parser.set_defaults(func=cmd_plugin_ref_edit)
+
+    ref_remove_parser = ref_subparsers.add_parser("remove", help="Remove ref from plugin")
+    ref_remove_parser.add_argument("plugin_id", help="Plugin ID")
+    ref_remove_parser.add_argument("ref_name", help="Ref name")
+    ref_remove_parser.set_defaults(func=cmd_plugin_ref_remove)
+
+    ref_list_parser = ref_subparsers.add_parser("list", help="List plugin refs")
+    ref_list_parser.add_argument("plugin_id", help="Plugin ID")
+    ref_list_parser.set_defaults(func=cmd_plugin_ref_list)
 
     # Blacklist commands
     blacklist_parser = subparsers.add_parser("blacklist", help="Blacklist operations")

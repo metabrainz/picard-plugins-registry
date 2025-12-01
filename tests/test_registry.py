@@ -57,15 +57,6 @@ def test_find_plugin(temp_registry):
     assert not_found is None
 
 
-def test_add_plugin_duplicate(temp_registry):
-    """Test adding duplicate plugin."""
-    plugin = {"id": "test-plugin", "name": "Test"}
-    temp_registry.add_plugin(plugin)
-
-    with pytest.raises(ValueError, match="already exists"):
-        temp_registry.add_plugin(plugin)
-
-
 def test_remove_plugin(temp_registry):
     """Test removing plugin."""
     plugin = {"id": "test-plugin", "name": "Test"}

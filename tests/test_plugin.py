@@ -112,7 +112,7 @@ def test_add_plugin_invalid_trust_level(mock_fetch, temp_registry):
 
 @patch("registry_lib.plugin.fetch_manifest")
 def test_add_plugin_duplicate(mock_fetch, temp_registry):
-    """Test adding duplicate plugin."""
+    """Test adding duplicate plugin by URL."""
     mock_fetch.return_value = {
         "uuid": "12345678-1234-4234-8234-123456789abc",
         "name": "Test Plugin",
@@ -123,8 +123,60 @@ def test_add_plugin_duplicate(mock_fetch, temp_registry):
 
     add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
 
-    with pytest.raises(ValueError, match="already exists"):
+    with pytest.raises(ValueError, match="Plugin with git URL.*already exists"):
         add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
+
+
+@patch("registry_lib.plugin.fetch_manifest")
+def test_add_plugin_duplicate_uuid(mock_fetch, temp_registry):
+    """Test adding plugin with duplicate UUID."""
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "A test plugin",
+        "api": ["3.0"],
+    }
+
+    add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
+
+    # Try to add different plugin with same UUID
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Another Plugin",
+        "version": "1.0.0",
+        "description": "Another plugin",
+        "api": ["3.0"],
+    }
+
+    with pytest.raises(ValueError, match="Plugin with UUID.*already exists"):
+        add_plugin(temp_registry, "https://github.com/user/another-plugin", "community")
+
+
+@patch("registry_lib.plugin.fetch_manifest")
+def test_add_plugin_duplicate_id(mock_fetch, temp_registry):
+    """Test adding plugin with duplicate ID (derived from URL)."""
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "A test plugin",
+        "api": ["3.0"],
+    }
+
+    add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
+
+    # Try to add with different UUID but same derived ID (same URL base)
+    mock_fetch.return_value = {
+        "uuid": "87654321-4321-4321-8321-cba987654321",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "A test plugin",
+        "api": ["3.0"],
+    }
+
+    with pytest.raises(ValueError, match="Plugin with ID.*already exists"):
+        add_plugin(temp_registry, "https://github.com/user/test-plugin.git", "community")
 
 
 @patch("registry_lib.plugin.fetch_manifest")
@@ -158,3 +210,33 @@ def test_update_plugin(mock_fetch, temp_registry):
     assert plugin["name"] == "Test Plugin Updated"
     assert plugin["description"] == "New description"
     assert plugin["authors"] == ["New Author"]
+
+
+@patch("registry_lib.plugin.fetch_manifest")
+def test_update_plugin_uuid_changed(mock_fetch, temp_registry):
+    """Test that updating plugin with changed UUID raises error."""
+    # Add plugin first
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "Test description",
+        "api": ["3.0"],
+        "authors": ["Test Author"],
+    }
+    add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
+
+    # Try to update with different UUID
+    mock_fetch.return_value = {
+        "uuid": "87654321-4321-4321-8321-cba987654321",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "Test description",
+        "api": ["3.0"],
+        "authors": ["Test Author"],
+    }
+
+    from registry_lib.plugin import update_plugin
+
+    with pytest.raises(ValueError, match="UUID mismatch.*UUIDs must not change"):
+        update_plugin(temp_registry, "test-plugin")

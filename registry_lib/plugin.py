@@ -38,6 +38,20 @@ def add_plugin(registry, git_url, trust_level, categories=None, refs=None):
     # Derive plugin ID
     plugin_id = derive_plugin_id(git_url)
 
+    # Check for duplicate git URL (most direct duplicate)
+    for existing in registry.data["plugins"]:
+        if existing["git_url"] == git_url:
+            raise ValueError(f"Plugin with git URL '{git_url}' already exists (plugin: {existing['id']})")
+
+    # Check for duplicate UUID
+    for existing in registry.data["plugins"]:
+        if existing["uuid"] == manifest["uuid"]:
+            raise ValueError(f"Plugin with UUID '{manifest['uuid']}' already exists (plugin: {existing['id']})")
+
+    # Check for duplicate ID
+    if registry.find_plugin(plugin_id):
+        raise ValueError(f"Plugin with ID '{plugin_id}' already exists")
+
     # Build plugin entry
     now = now_iso8601()
     plugin = {
@@ -105,30 +119,38 @@ def _parse_refs(refs_str):
     return refs
 
 
-def update_plugin(registry, plugin_id):
+def update_plugin(registry, plugin_id, ref=None):
     """Update plugin metadata from MANIFEST.
 
     Args:
         registry: Registry instance
         plugin_id: Plugin ID to update
+        ref: Git ref to fetch from (optional, defaults to first ref or main)
 
     Returns:
         dict: Updated plugin entry
 
     Raises:
-        ValueError: If plugin not found or validation fails
+        ValueError: If plugin not found, validation fails, or UUID changed
     """
     plugin = registry.find_plugin(plugin_id)
     if not plugin:
         raise ValueError(f"Plugin {plugin_id} not found")
 
-    # Get ref (default to main if not specified)
-    refs = plugin.get("refs", [{"name": "main"}])
-    ref = refs[0]["name"]
+    # Get ref (use provided, or default to first ref, or main)
+    if ref is None:
+        refs = plugin.get("refs", [{"name": "main"}])
+        ref = refs[0]["name"]
 
     # Fetch and validate manifest
     manifest = fetch_manifest(plugin["git_url"], ref)
     validate_manifest(manifest)
+
+    # Check UUID hasn't changed
+    if manifest["uuid"] != plugin["uuid"]:
+        raise ValueError(
+            f"UUID mismatch: MANIFEST has {manifest['uuid']} but registry has {plugin['uuid']}. UUIDs must not change."
+        )
 
     # Update fields from manifest
     plugin["name"] = manifest["name"]
