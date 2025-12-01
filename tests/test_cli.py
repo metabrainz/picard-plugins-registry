@@ -51,3 +51,17 @@ def test_cli_plugin_edit(mock_registry):
 
     assert mock_plugin["trust_level"] == "official"
     mock_registry.return_value.save.assert_called_once()
+
+
+@patch("sys.argv", ["registry", "plugin", "redirect", "test-plugin", "https://github.com/old/url"])
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_redirect(mock_registry):
+    """Test plugin redirect command."""
+    mock_plugin = {"id": "test-plugin", "name": "Test Plugin", "git_url": "https://github.com/new/url"}
+    mock_registry.return_value.find_plugin.return_value = mock_plugin
+
+    main()
+
+    assert "redirect_from" in mock_plugin
+    assert "https://github.com/old/url" in mock_plugin["redirect_from"]
+    mock_registry.return_value.save.assert_called_once()

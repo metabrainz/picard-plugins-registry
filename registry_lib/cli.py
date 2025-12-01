@@ -9,6 +9,27 @@ from registry_lib.plugin import add_plugin
 from registry_lib.registry import Registry
 
 
+def cmd_plugin_redirect(args):
+    """Add redirect for plugin that moved URLs."""
+    registry = Registry(args.registry)
+    plugin = registry.find_plugin(args.plugin_id)
+    if not plugin:
+        print(f"Error: Plugin {args.plugin_id} not found", file=sys.stderr)
+        sys.exit(1)
+
+    # Initialize redirect_from if not present
+    if 'redirect_from' not in plugin:
+        plugin['redirect_from'] = []
+
+    # Add old URL to redirect_from
+    if args.old_url not in plugin['redirect_from']:
+        plugin['redirect_from'].append(args.old_url)
+
+    plugin["updated_at"] = datetime.now(timezone.utc).isoformat()
+    registry.save()
+    print(f"Added redirect: {args.old_url} -> {plugin['git_url']}")
+
+
 def cmd_plugin_edit(args):
     """Edit plugin in registry."""
     registry = Registry(args.registry)
@@ -110,6 +131,12 @@ def main():
     edit_parser.add_argument("--trust", choices=["official", "trusted", "community"], help="Trust level")
     edit_parser.add_argument("--categories", help="Plugin categories (comma-separated)")
     edit_parser.set_defaults(func=cmd_plugin_edit)
+
+    # plugin redirect
+    redirect_parser = plugin_subparsers.add_parser("redirect", help="Add URL redirect for moved plugin")
+    redirect_parser.add_argument("plugin_id", help="Plugin ID")
+    redirect_parser.add_argument("old_url", help="Old git URL to redirect from")
+    redirect_parser.set_defaults(func=cmd_plugin_redirect)
 
     # plugin remove
     remove_parser = plugin_subparsers.add_parser("remove", help="Remove plugin")

@@ -57,6 +57,14 @@ uv run registry plugin edit plugin-id --categories metadata,ui
 uv run registry plugin edit plugin-id --trust trusted --categories metadata
 ```
 
+### Add URL Redirect
+
+When a plugin moves to a new repository URL, add a redirect so users with the old URL can still get updates:
+
+```bash
+uv run registry plugin redirect plugin-id https://github.com/olduser/old-repo
+```
+
 ### List Plugins
 
 ```bash
