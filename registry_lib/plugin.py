@@ -38,13 +38,10 @@ def add_plugin(registry, git_url, trust_level, categories=None, refs=None):
     # Derive plugin ID
     plugin_id = derive_plugin_id(git_url)
 
-    # Check for duplicate git URL (most direct duplicate)
+    # Check for duplicates in single pass
     for existing in registry.data["plugins"]:
         if existing["git_url"] == git_url:
             raise ValueError(f"Plugin with git URL '{git_url}' already exists (plugin: {existing['id']})")
-
-    # Check for duplicate UUID
-    for existing in registry.data["plugins"]:
         if existing["uuid"] == manifest["uuid"]:
             raise ValueError(f"Plugin with UUID '{manifest['uuid']}' already exists (plugin: {existing['id']})")
 
