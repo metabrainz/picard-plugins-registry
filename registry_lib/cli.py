@@ -39,6 +39,35 @@ def cmd_validate(args):
         )
 
 
+def cmd_stats(args):
+    """Show registry statistics."""
+    registry = Registry(args.registry)
+    plugins = registry.data['plugins']
+
+    # Count by trust level
+    trust_counts = {}
+    for plugin in plugins:
+        trust = plugin.get('trust_level', 'unknown')
+        trust_counts[trust] = trust_counts.get(trust, 0) + 1
+
+    # Count by category
+    category_counts = {}
+    for plugin in plugins:
+        for cat in plugin.get('categories', []):
+            category_counts[cat] = category_counts.get(cat, 0) + 1
+
+    print(f"Total plugins: {len(plugins)}")
+    print(f"Blacklist entries: {len(registry.data['blacklist'])}")
+    print()
+    print("By trust level:")
+    for trust, count in sorted(trust_counts.items()):
+        print(f"  {trust}: {count}")
+    print()
+    print("By category:")
+    for cat, count in sorted(category_counts.items()):
+        print(f"  {cat}: {count}")
+
+
 def cmd_plugin_redirect(args):
     """Add redirect for plugin that moved URLs."""
     registry = Registry(args.registry)
@@ -244,6 +273,10 @@ def main():
     # Validate command
     validate_parser = subparsers.add_parser("validate", help="Validate registry")
     validate_parser.set_defaults(func=cmd_validate)
+
+    # Stats command
+    stats_parser = subparsers.add_parser("stats", help="Show registry statistics")
+    stats_parser.set_defaults(func=cmd_stats)
 
     args = parser.parse_args()
     try:

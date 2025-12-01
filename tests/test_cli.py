@@ -102,3 +102,20 @@ def test_cli_plugin_show(mock_registry):
     main()
 
     # Should print plugin details without errors
+
+
+@patch("sys.argv", ["registry", "stats"])
+@patch("registry_lib.cli.Registry")
+def test_cli_stats(mock_registry):
+    """Test stats command."""
+    mock_registry.return_value.data = {
+        "plugins": [
+            {"id": "p1", "trust_level": "official", "categories": ["metadata"]},
+            {"id": "p2", "trust_level": "community", "categories": ["metadata", "ui"]},
+        ],
+        "blacklist": [],
+    }
+
+    main()
+
+    # Should print stats without errors
