@@ -15,13 +15,12 @@ Copied from: https://github.com/metabrainz/picard
 
 ## Maintenance
 
-These files are copied from the Picard repository with minimal formatting differences (ruff may adjust blank lines due to different isort config). The code is functionally identical.
+These files are copied **without modification** from the Picard repository.
 
 To update:
 ```bash
 cp /path/to/picard/picard/plugin3/constants.py registry_lib/picard/
 cp /path/to/picard/picard/plugin3/validator.py registry_lib/picard/
-# Ruff will auto-format on commit
 ```
 
 **Note:** validator.py uses relative imports (`.constants`) which work in both Picard and registry contexts.
