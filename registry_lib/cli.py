@@ -9,6 +9,36 @@ from registry_lib.plugin import add_plugin
 from registry_lib.registry import Registry
 
 
+def cmd_validate(args):
+    """Validate registry file."""
+    registry = Registry(args.registry)
+    errors = []
+
+    # Check for duplicate IDs
+    ids = [p['id'] for p in registry.data['plugins']]
+    if len(ids) != len(set(ids)):
+        errors.append("Duplicate plugin IDs found")
+
+    # Check for duplicate UUIDs
+    uuids = [p['uuid'] for p in registry.data['plugins']]
+    if len(uuids) != len(set(uuids)):
+        errors.append("Duplicate plugin UUIDs found")
+
+    # Check for duplicate git URLs
+    urls = [p['git_url'] for p in registry.data['plugins']]
+    if len(urls) != len(set(urls)):
+        errors.append("Duplicate git URLs found")
+
+    if errors:
+        for error in errors:
+            print(f"Error: {error}", file=sys.stderr)
+        sys.exit(1)
+    else:
+        print(
+            f"✓ Registry valid: {len(registry.data['plugins'])} plugins, {len(registry.data['blacklist'])} blacklist entries"
+        )
+
+
 def cmd_plugin_redirect(args):
     """Add redirect for plugin that moved URLs."""
     registry = Registry(args.registry)
@@ -168,6 +198,10 @@ def main():
     # blacklist list
     bl_list_parser = blacklist_subparsers.add_parser("list", help="List blacklist")
     bl_list_parser.set_defaults(func=cmd_blacklist_list)
+
+    # Validate command
+    validate_parser = subparsers.add_parser("validate", help="Validate registry")
+    validate_parser.set_defaults(func=cmd_validate)
 
     args = parser.parse_args()
     try:

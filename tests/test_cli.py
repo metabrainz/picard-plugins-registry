@@ -65,3 +65,17 @@ def test_cli_plugin_redirect(mock_registry):
     assert "redirect_from" in mock_plugin
     assert "https://github.com/old/url" in mock_plugin["redirect_from"]
     mock_registry.return_value.save.assert_called_once()
+
+
+@patch("sys.argv", ["registry", "validate"])
+@patch("registry_lib.cli.Registry")
+def test_cli_validate(mock_registry):
+    """Test validate command."""
+    mock_registry.return_value.data = {
+        "plugins": [{"id": "p1", "uuid": "u1", "git_url": "url1"}],
+        "blacklist": [],
+    }
+
+    main()
+
+    # Should not raise any errors
