@@ -111,6 +111,30 @@ def cmd_plugin_list(args):
         print(f"{plugin['id']}: {plugin['name']} ({plugin['trust_level']})")
 
 
+def cmd_plugin_show(args):
+    """Show plugin details."""
+    registry = Registry(args.registry)
+    plugin = registry.find_plugin(args.plugin_id)
+    if not plugin:
+        print(f"Error: Plugin {args.plugin_id} not found", file=sys.stderr)
+        sys.exit(1)
+
+    print(f"ID: {plugin['id']}")
+    print(f"Name: {plugin['name']}")
+    print(f"UUID: {plugin['uuid']}")
+    print(f"Description: {plugin['description']}")
+    print(f"URL: {plugin['git_url']}")
+    print(f"Trust Level: {plugin['trust_level']}")
+    print(f"Categories: {', '.join(plugin.get('categories', []))}")
+    print(f"Authors: {', '.join(plugin.get('authors', []))}")
+    if 'maintainers' in plugin:
+        print(f"Maintainers: {', '.join(plugin['maintainers'])}")
+    if 'redirect_from' in plugin:
+        print(f"Redirects from: {', '.join(plugin['redirect_from'])}")
+    print(f"Added: {plugin['added_at']}")
+    print(f"Updated: {plugin['updated_at']}")
+
+
 def cmd_blacklist_add(args):
     """Add entry to blacklist."""
     registry = Registry(args.registry)
@@ -189,6 +213,11 @@ def main():
     # plugin list
     list_parser = plugin_subparsers.add_parser("list", help="List plugins")
     list_parser.set_defaults(func=cmd_plugin_list)
+
+    # plugin show
+    show_parser = plugin_subparsers.add_parser("show", help="Show plugin details")
+    show_parser.add_argument("plugin_id", help="Plugin ID")
+    show_parser.set_defaults(func=cmd_plugin_show)
 
     # Blacklist commands
     blacklist_parser = subparsers.add_parser("blacklist", help="Blacklist operations")

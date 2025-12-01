@@ -79,3 +79,26 @@ def test_cli_validate(mock_registry):
     main()
 
     # Should not raise any errors
+
+
+@patch("sys.argv", ["registry", "plugin", "show", "test-plugin"])
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_show(mock_registry):
+    """Test plugin show command."""
+    mock_plugin = {
+        "id": "test-plugin",
+        "name": "Test Plugin",
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "description": "A test plugin",
+        "git_url": "https://github.com/user/plugin",
+        "trust_level": "community",
+        "categories": ["metadata"],
+        "authors": ["Test Author"],
+        "added_at": "2025-01-01T00:00:00Z",
+        "updated_at": "2025-01-01T00:00:00Z",
+    }
+    mock_registry.return_value.find_plugin.return_value = mock_plugin
+
+    main()
+
+    # Should print plugin details without errors
