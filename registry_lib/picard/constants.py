@@ -22,6 +22,7 @@
 
 import re
 
+
 # Trust levels that appear in registry JSON
 REGISTRY_TRUST_LEVELS = ['official', 'trusted', 'community']
 

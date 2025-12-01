@@ -36,6 +36,13 @@ ignore = ["B023", "E501", "Q"]
 fixable = ["ALL"]
 unfixable = []
 
+[tool.ruff.lint.isort]
+force-sort-within-sections = true
+combine-as-imports = true
+lines-after-imports = 2
+order-by-type = true
+split-on-trailing-comma = true
+
 [tool.ruff.format]
 quote-style = "preserve"
 indent-style = "space"
