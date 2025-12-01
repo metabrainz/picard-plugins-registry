@@ -1,6 +1,6 @@
 {
   "api_version": "3.0",
-  "last_updated": "2025-12-01T10:44:36Z",
+  "last_updated": "2025-12-01T10:45:20Z",
   "plugins": [
     {
       "id": "additional-artists-details",
@@ -15,8 +15,8 @@
       "authors": [
         "Bob Swift"
       ],
-      "added_at": "2025-12-01T10:29:08.436743+00:00",
-      "updated_at": "2025-12-01T10:44:36Z",
+      "added_at": "2025-12-01T10:45:20Z",
+      "updated_at": "2025-12-01T10:45:20Z",
       "redirect_from": [
         "https://github.com/olduser/old-plugin"
       ]
