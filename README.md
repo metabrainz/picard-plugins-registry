@@ -222,19 +222,23 @@ Plugin developers can submit their plugins to the registry by creating a pull re
 
 ### Submission Process
 
-1. **Fork and clone this repository:**
+1. **Fork this repository on GitHub:**
+   - Go to https://github.com/metabrainz/picard-plugins-registry
+   - Click "Fork" button
+
+2. **Clone your fork:**
    ```bash
    git clone https://github.com/YOUR-USERNAME/picard-plugins-registry.git
    cd picard-plugins-registry
    ```
 
-2. **Set up the environment:**
+3. **Set up the environment:**
    ```bash
    uv sync
    source .venv/bin/activate
    ```
 
-3. **Add your plugin:**
+4. **Add your plugin:**
    ```bash
    registry plugin add https://github.com/YOUR-USERNAME/your-plugin \
        --trust community \
@@ -243,19 +247,19 @@ Plugin developers can submit their plugins to the registry by creating a pull re
 
    Available categories: `metadata`, `coverart`, `ui`, `scripting`, `formats`, `other`
 
-4. **Validate the registry:**
+5. **Validate the registry:**
    ```bash
    registry validate
    ```
 
-5. **Commit and push:**
+6. **Commit and push:**
    ```bash
    git add plugins.json
    git commit -m "Add plugin: Your Plugin Name"
    git push origin main
    ```
 
-6. **Create a pull request:**
+7. **Create a pull request:**
    - Go to https://github.com/metabrainz/picard-plugins-registry
    - Click "New Pull Request"
    - Select your fork and branch
