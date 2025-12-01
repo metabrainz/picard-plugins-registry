@@ -27,8 +27,26 @@ class Registry:
                 "plugins": [],
                 "blacklist": [],
             }
-        with open(self.path) as f:
-            return json.load(f)
+        try:
+            with open(self.path) as f:
+                return json.load(f)
+        except json.JSONDecodeError as e:
+            # Show context around the error
+            with open(self.path) as f:
+                lines = f.readlines()
+
+            error_line = e.lineno - 1  # 0-indexed
+            start = max(0, error_line - 2)
+            end = min(len(lines), error_line + 3)
+
+            context = []
+            for i in range(start, end):
+                marker = ">>> " if i == error_line else "    "
+                context.append(f"{marker}{i + 1}: {lines[i].rstrip()}")
+
+            raise ValueError(
+                f"Invalid JSON in {self.path}:\n{e.msg} at line {e.lineno}, column {e.colno}\n\n" + "\n".join(context)
+            ) from e
 
     def save(self):
         """Save registry to file."""

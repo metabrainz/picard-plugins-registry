@@ -93,3 +93,12 @@ def test_remove_blacklist(temp_registry):
 
     temp_registry.remove_blacklist("https://github.com/bad/plugin")
     assert len(temp_registry.data["blacklist"]) == 0
+
+
+def test_load_invalid_json(tmp_path):
+    """Test loading invalid JSON shows helpful error."""
+    registry_path = tmp_path / "invalid.json"
+    registry_path.write_text('{"invalid": json}')
+
+    with pytest.raises(ValueError, match="Invalid JSON"):
+        Registry(str(registry_path))
