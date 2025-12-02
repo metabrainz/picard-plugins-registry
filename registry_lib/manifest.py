@@ -4,6 +4,7 @@ import sys
 
 import requests
 
+
 if sys.version_info >= (3, 11):
     import tomllib
 else:
@@ -16,23 +17,25 @@ def fetch_manifest(git_url, ref="main"):
     """Fetch MANIFEST.toml from git repository.
 
     Args:
-        git_url: Git repository URL (GitHub only)
+        git_url: Git repository URL (GitHub or GitLab)
         ref: Git ref (branch, tag, or commit)
 
     Returns:
         dict: Parsed MANIFEST.toml content
 
     Raises:
-        ValueError: If URL is not GitHub or manifest is invalid
+        ValueError: If URL is not GitHub/GitLab or manifest is invalid
         requests.HTTPError: If manifest cannot be fetched
     """
-    if "github.com" not in git_url:
-        raise ValueError(f"Only GitHub URLs are supported: {git_url}")
+    git_url = git_url.rstrip("/").removesuffix(".git")
 
-    # Convert to raw URL
-    raw_url = git_url.replace("github.com", "raw.githubusercontent.com")
-    raw_url = raw_url.rstrip("/").removesuffix(".git")
-    manifest_url = f"{raw_url}/{ref}/MANIFEST.toml"
+    if "github.com" in git_url:
+        raw_url = git_url.replace("github.com", "raw.githubusercontent.com")
+        manifest_url = f"{raw_url}/{ref}/MANIFEST.toml"
+    elif "gitlab.com" in git_url:
+        manifest_url = f"{git_url}/-/raw/{ref}/MANIFEST.toml"
+    else:
+        raise ValueError(f"Only GitHub and GitLab URLs are supported: {git_url}")
 
     response = requests.get(manifest_url, timeout=10)
     response.raise_for_status()
