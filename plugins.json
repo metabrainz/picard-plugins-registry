@@ -52,6 +52,31 @@
       }
     },
     {
+      "id": "combine-performer-tags",
+      "uuid": "4779bcaf-1bda-4580-8c55-1fbe28771ce8",
+      "name": "Combine Performer Tags",
+      "description": "This plugin combines all performer tags into a multi-value variable `%_performers%`.",
+      "git_url": "https://github.com/rdswift/picard-plugin-combine-performer-tags",
+      "categories": [
+        "metadata"
+      ],
+      "trust_level": "trusted",
+      "authors": [
+        "Bob Swift"
+      ],
+      "added_at": "2025-12-03T18:05:22Z",
+      "updated_at": "2025-12-03T18:07:53Z",
+      "name_i18n": {
+        "de": "Performer-Tags kombinieren",
+        "fr": "Combiner les balises Performer"
+      },
+      "description_i18n": {
+        "de": "Dieses Plugin fasst alle Performer-Tags in einer Mehrwertvariablen `%_performers%` zusammen.",
+        "fr": "Ce plugin combine toutes les balises performer dans une variable à valeurs multiples `%_performers%`."
+      },
+      "versioning_scheme": "semver"
+    },
+    {
       "id": "view-script-variables",
       "uuid": "62e2a3fd-f4df-4b53-abc5-b73d2a36b672",
       "name": "View script variables",
