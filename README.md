@@ -243,6 +243,9 @@ registry output
 # Output as JSON
 registry output --format json
 
+# Output in human-readable format
+registry output --format human
+
 # Convert TOML to JSON
 registry output --format json > plugins.json
 ```
