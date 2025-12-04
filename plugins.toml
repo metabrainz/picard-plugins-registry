@@ -112,7 +112,7 @@ categories = [
   "metadata",
   "ui",
 ]
-trust_level = "community"
+trust_level = "trusted"
 authors = [
   "Sophist",
 ]
