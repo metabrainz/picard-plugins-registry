@@ -11,7 +11,7 @@ from registry_lib.registry import Registry
 @pytest.fixture
 def temp_registry(tmp_path):
     """Create temporary registry."""
-    return Registry(str(tmp_path / "plugins.json"))
+    return Registry(str(tmp_path / "plugins.toml"))
 
 
 @patch("registry_lib.plugin.fetch_manifest")

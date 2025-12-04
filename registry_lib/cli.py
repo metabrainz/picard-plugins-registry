@@ -86,6 +86,20 @@ def cmd_stats(args):
         print(f"  {cat}: {count}")
 
 
+def cmd_output(args):
+    """Output registry in specified format."""
+    import json
+
+    import tomli_w
+
+    registry = Registry(args.registry)
+
+    if args.format == "json":
+        print(json.dumps(registry.data, indent=2, ensure_ascii=False))
+    else:  # toml
+        print(tomli_w.dumps(registry.data, multiline_strings=True, indent=2))
+
+
 def cmd_plugin_redirect(args):
     """Add, remove, or list redirects for plugin that moved URLs."""
     registry = Registry(args.registry)
@@ -423,7 +437,7 @@ def cmd_blacklist_show(args):
 def main():
     """Main CLI entry point."""
     parser = argparse.ArgumentParser(description="Picard plugins registry maintenance tool")
-    parser.add_argument("--registry", default="plugins.json", help="Path to registry file")
+    parser.add_argument("--registry", default="plugins.toml", help="Path to registry file")
 
     subparsers = parser.add_subparsers(dest="command", required=True)
 
@@ -561,6 +575,13 @@ def main():
     # Stats command
     stats_parser = subparsers.add_parser("stats", help="Show registry statistics")
     stats_parser.set_defaults(func=cmd_stats)
+
+    # Output command
+    output_parser = subparsers.add_parser("output", help="Output registry in specified format")
+    output_parser.add_argument(
+        "--format", choices=["json", "toml"], default="toml", help="Output format (default: toml)"
+    )
+    output_parser.set_defaults(func=cmd_output)
 
     args = parser.parse_args()
     try:

@@ -11,7 +11,7 @@ from registry_lib.registry import Registry
 @pytest.fixture
 def temp_registry(tmp_path):
     """Create temporary registry."""
-    return Registry(str(tmp_path / "plugins.json"))
+    return Registry(str(tmp_path / "plugins.toml"))
 
 
 @patch("registry_lib.plugin.fetch_manifest")
@@ -93,6 +93,6 @@ def test_versioning_scheme_persists_in_registry(mock_fetch, temp_registry, tmp_p
     temp_registry.save()
 
     # Load registry and verify
-    registry2 = Registry(str(tmp_path / "plugins.json"))
+    registry2 = Registry(str(tmp_path / "plugins.toml"))
     plugin = registry2.find_plugin("plugin")
     assert plugin["versioning_scheme"] == "semver"

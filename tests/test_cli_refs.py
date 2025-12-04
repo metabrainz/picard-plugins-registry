@@ -1,9 +1,11 @@
 """Tests for CLI ref commands."""
 
-import json
 from pathlib import Path
 import tempfile
 from unittest.mock import patch
+
+import tomli_w
+import tomllib
 
 from registry_lib.cli import main
 
@@ -11,7 +13,7 @@ from registry_lib.cli import main
 def test_cli_ref_add(capsys):
     """Test ref add command."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        registry_file = Path(tmpdir) / "plugins.json"
+        registry_file = Path(tmpdir) / "plugins.toml"
         registry_data = {
             "api_version": "3.0",
             "plugins": [
@@ -30,7 +32,7 @@ def test_cli_ref_add(capsys):
             ],
             "blacklist": [],
         }
-        registry_file.write_text(json.dumps(registry_data, indent=2))
+        registry_file.write_bytes(tomli_w.dumps(registry_data, indent=2).encode())
 
         with patch(
             "sys.argv",
@@ -54,7 +56,7 @@ def test_cli_ref_add(capsys):
         assert "Added ref: develop" in captured.out
 
         # Verify ref was added
-        data = json.loads(registry_file.read_text())
+        data = tomllib.loads(registry_file.read_text())
         plugin = data["plugins"][0]
         assert "refs" in plugin
         assert len(plugin["refs"]) == 1
@@ -66,7 +68,7 @@ def test_cli_ref_add(capsys):
 def test_cli_ref_edit(capsys):
     """Test ref edit command."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        registry_file = Path(tmpdir) / "plugins.json"
+        registry_file = Path(tmpdir) / "plugins.toml"
         registry_data = {
             "api_version": "3.0",
             "plugins": [
@@ -86,7 +88,7 @@ def test_cli_ref_edit(capsys):
             ],
             "blacklist": [],
         }
-        registry_file.write_text(json.dumps(registry_data, indent=2))
+        registry_file.write_bytes(tomli_w.dumps(registry_data, indent=2).encode())
 
         with patch(
             "sys.argv",
@@ -108,7 +110,7 @@ def test_cli_ref_edit(capsys):
         assert "Updated ref: develop" in captured.out
 
         # Verify ref was updated
-        data = json.loads(registry_file.read_text())
+        data = tomllib.loads(registry_file.read_text())
         plugin = data["plugins"][0]
         assert plugin["refs"][0]["max_api_version"] == "4.99"
 
@@ -116,7 +118,7 @@ def test_cli_ref_edit(capsys):
 def test_cli_ref_rename(capsys):
     """Test ref rename via edit command."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        registry_file = Path(tmpdir) / "plugins.json"
+        registry_file = Path(tmpdir) / "plugins.toml"
         registry_data = {
             "api_version": "3.0",
             "plugins": [
@@ -136,7 +138,7 @@ def test_cli_ref_rename(capsys):
             ],
             "blacklist": [],
         }
-        registry_file.write_text(json.dumps(registry_data, indent=2))
+        registry_file.write_bytes(tomli_w.dumps(registry_data, indent=2).encode())
 
         with patch(
             "sys.argv",
@@ -148,7 +150,7 @@ def test_cli_ref_rename(capsys):
         assert "Updated ref: beta" in captured.out
 
         # Verify ref was renamed
-        data = json.loads(registry_file.read_text())
+        data = tomllib.loads(registry_file.read_text())
         plugin = data["plugins"][0]
         assert plugin["refs"][0]["name"] == "beta"
 
@@ -156,7 +158,7 @@ def test_cli_ref_rename(capsys):
 def test_cli_ref_list(capsys):
     """Test ref list command."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        registry_file = Path(tmpdir) / "plugins.json"
+        registry_file = Path(tmpdir) / "plugins.toml"
         registry_data = {
             "api_version": "3.0",
             "plugins": [
@@ -184,7 +186,7 @@ def test_cli_ref_list(capsys):
             ],
             "blacklist": [],
         }
-        registry_file.write_text(json.dumps(registry_data, indent=2))
+        registry_file.write_bytes(tomli_w.dumps(registry_data, indent=2).encode())
 
         with patch("sys.argv", ["registry", "--registry", str(registry_file), "ref", "list", "test-plugin"]):
             main()
@@ -197,7 +199,7 @@ def test_cli_ref_list(capsys):
 def test_cli_ref_list_no_refs(capsys):
     """Test ref list command with no refs."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        registry_file = Path(tmpdir) / "plugins.json"
+        registry_file = Path(tmpdir) / "plugins.toml"
         registry_data = {
             "api_version": "3.0",
             "plugins": [
@@ -216,7 +218,7 @@ def test_cli_ref_list_no_refs(capsys):
             ],
             "blacklist": [],
         }
-        registry_file.write_text(json.dumps(registry_data, indent=2))
+        registry_file.write_bytes(tomli_w.dumps(registry_data, indent=2).encode())
 
         with patch("sys.argv", ["registry", "--registry", str(registry_file), "ref", "list", "test-plugin"]):
             main()
@@ -228,7 +230,7 @@ def test_cli_ref_list_no_refs(capsys):
 def test_cli_ref_remove(capsys):
     """Test ref remove command."""
     with tempfile.TemporaryDirectory() as tmpdir:
-        registry_file = Path(tmpdir) / "plugins.json"
+        registry_file = Path(tmpdir) / "plugins.toml"
         registry_data = {
             "api_version": "3.0",
             "plugins": [
@@ -248,7 +250,7 @@ def test_cli_ref_remove(capsys):
             ],
             "blacklist": [],
         }
-        registry_file.write_text(json.dumps(registry_data, indent=2))
+        registry_file.write_bytes(tomli_w.dumps(registry_data, indent=2).encode())
 
         with patch(
             "sys.argv", ["registry", "--registry", str(registry_file), "ref", "remove", "test-plugin", "develop"]
@@ -259,6 +261,6 @@ def test_cli_ref_remove(capsys):
         assert "Removed ref: develop" in captured.out
 
         # Verify ref was removed
-        data = json.loads(registry_file.read_text())
+        data = tomllib.loads(registry_file.read_text())
         plugin = data["plugins"][0]
         assert "refs" not in plugin

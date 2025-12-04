@@ -1,17 +1,24 @@
 """Registry management."""
 
-import json
 from pathlib import Path
+
+import tomllib
+
+
+try:
+    import tomli_w
+except ImportError:
+    tomli_w = None
 
 
 class Registry:
-    """Manages the plugins.json registry file."""
+    """Manages the plugins.toml registry file."""
 
-    def __init__(self, path="plugins.json"):
+    def __init__(self, path="plugins.toml"):
         """Initialize registry.
 
         Args:
-            path: Path to plugins.json file
+            path: Path to plugins.toml file
         """
         self.path = Path(path)
         self.data = self._load()
@@ -25,33 +32,31 @@ class Registry:
                 "blacklist": [],
             }
         try:
-            with open(self.path) as f:
-                return json.load(f)
-        except json.JSONDecodeError as e:
-            # Show context around the error
-            with open(self.path) as f:
-                lines = f.readlines()
-
-            error_line = e.lineno - 1  # 0-indexed
-            start = max(0, error_line - 2)
-            end = min(len(lines), error_line + 3)
-
-            context = []
-            for i in range(start, end):
-                marker = ">>> " if i == error_line else "    "
-                context.append(f"{marker}{i + 1}: {lines[i].rstrip()}")
-
-            raise ValueError(
-                f"Invalid JSON in {self.path}:\n{e.msg} at line {e.lineno}, column {e.colno}\n\n" + "\n".join(context)
-            ) from e
+            with open(self.path, "rb") as f:
+                data = tomllib.load(f)
+                # Ensure blacklist key exists (may be omitted in TOML)
+                if "blacklist" not in data:
+                    data["blacklist"] = []
+                return data
+        except tomllib.TOMLDecodeError as e:
+            raise ValueError(f"Invalid TOML in {self.path}: {e}") from e
 
     def save(self):
         """Save registry to file."""
+        if not tomli_w:
+            raise RuntimeError("tomli-w is required to save registry")
         # Sort plugins by ID for consistent ordering
         self.data["plugins"] = sorted(self.data["plugins"], key=lambda p: p["id"])
-        with open(self.path, "w") as f:
-            json.dump(self.data, f, indent=2, ensure_ascii=False)
-            f.write("\n")
+
+        # Prepare data for saving (remove empty arrays)
+        save_data = {"api_version": self.data["api_version"]}
+        if self.data.get("plugins"):
+            save_data["plugins"] = self.data["plugins"]
+        if self.data.get("blacklist"):
+            save_data["blacklist"] = self.data["blacklist"]
+
+        with open(self.path, "wb") as f:
+            tomli_w.dump(save_data, f, multiline_strings=True, indent=2)
 
     def find_plugin(self, plugin_id):
         """Find plugin by ID.

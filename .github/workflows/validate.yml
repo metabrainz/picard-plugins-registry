@@ -20,7 +20,7 @@ jobs:
         with:
           filters: |
             registry:
-              - 'plugins.json'
+              - 'plugins.toml'
 
       - name: Install uv
         if: steps.changes.outputs.registry == 'true'

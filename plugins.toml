@@ -1,0 +1,105 @@
+api_version = "3.0"
+
+[[plugins]]
+id = "additional-artists-details"
+uuid = "81fd1f5f-f723-498f-a82e-17fb4163c83a"
+name = "Additional Artists Details"
+description = "This plugin provides specialized album and track variables with artist details for use in tagging and naming scripts."
+git_url = "https://github.com/rdswift/picard-plugin-additional-artists-details"
+categories = [
+  "metadata",
+]
+trust_level = "official"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-01T11:16:37Z"
+updated_at = "2025-12-02T21:36:08Z"
+versioning_scheme = "semver"
+
+[plugins.name_i18n]
+de = "Weitere Details zu den Künstlern"
+fr = "Détails supplémentaires sur les artistes"
+
+[plugins.description_i18n]
+de = "Dieses Plugin stellt spezielle Album- und Titelvariablen mit Künstlerinformationen zur Verwendung in Tagging- und Benennungsskripten bereit."
+fr = "Ce plugin fournit des variables spécialisées pour les albums et les pistes, avec des informations sur les artistes, à utiliser dans les scripts de balisage et de nommage."
+
+[[plugins]]
+id = "additional-artists-variables"
+uuid = "2eae631a-1696-4bdc-841f-f75aaa3ae294"
+name = "Additional Artists Variables"
+description = "This plugin provides specialized album and track variables for use in naming scripts."
+git_url = "https://github.com/rdswift/picard-plugin-additional-artists-variables"
+categories = [
+  "metadata",
+]
+trust_level = "official"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-01T17:55:54Z"
+updated_at = "2025-12-02T22:05:40Z"
+versioning_scheme = "semver"
+
+[plugins.name_i18n]
+de = "Zusätzliche Künstlervariablen"
+fr = "Variables supplémentaires relatives aux artistes"
+
+[plugins.description_i18n]
+de = "Dieses Plugin stellt spezielle Album- und Titelvariablen für die Verwendung in Benennungsskripten bereit."
+fr = "Ce plugin fournit des variables spécialisées pour les albums et les pistes à utiliser dans les scripts de nommage."
+
+[[plugins]]
+id = "combine-performer-tags"
+uuid = "4779bcaf-1bda-4580-8c55-1fbe28771ce8"
+name = "Combine Performer Tags"
+description = "This plugin combines all performer tags into a multi-value variable `%_performers%`."
+git_url = "https://github.com/rdswift/picard-plugin-combine-performer-tags"
+categories = [
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-03T18:05:22Z"
+updated_at = "2025-12-03T18:07:53Z"
+versioning_scheme = "semver"
+
+[plugins.name_i18n]
+de = "Performer-Tags kombinieren"
+fr = "Combiner les balises Performer"
+
+[plugins.description_i18n]
+de = "Dieses Plugin fasst alle Performer-Tags in einer Mehrwertvariablen `%_performers%` zusammen."
+fr = "Ce plugin combine toutes les balises performer dans une variable à valeurs multiples `%_performers%`."
+
+[[plugins]]
+id = "view-script-variables"
+uuid = "62e2a3fd-f4df-4b53-abc5-b73d2a36b672"
+name = "View script variables"
+description = "Display a dialog box listing the metadata tags and variables for the track / file."
+git_url = "https://github.com/rdswift/picard-plugin-view-script-variables"
+categories = [
+  "metadata",
+  "ui",
+]
+trust_level = "community"
+authors = [
+  "Sophist",
+]
+added_at = "2025-12-03T23:44:25Z"
+updated_at = "2025-12-03T23:44:25Z"
+maintainers = [
+  "Bob Swift",
+]
+versioning_scheme = "semver"
+
+[plugins.name_i18n]
+de = "Script-Variablen anzeigen"
+fr = "Afficher les variables du script"
+
+[plugins.description_i18n]
+de = "Zeigen Sie ein Dialogfeld an, in dem die Metadaten-Tags und Variablen für den Titel/die Datei aufgelistet sind."
+fr = "Affichez une boîte de dialogue répertoriant les balises de métadonnées et les variables pour la piste/le fichier."

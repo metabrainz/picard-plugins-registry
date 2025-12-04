@@ -8,6 +8,7 @@ version = "1.0.0"
 dependencies = [
     "requests~=2.31",
     "tomlkit~=0.12; python_version < '3.11'",
+    "tomli-w>=1.0.0",
 ]
 
 [dependency-groups]

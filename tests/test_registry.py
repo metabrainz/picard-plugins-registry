@@ -8,7 +8,7 @@ from registry_lib.registry import Registry
 @pytest.fixture
 def temp_registry(tmp_path):
     """Create temporary registry."""
-    registry_path = tmp_path / "plugins.json"
+    registry_path = tmp_path / "plugins.toml"
     return Registry(str(registry_path))
 
 
@@ -21,7 +21,7 @@ def test_registry_init_new(temp_registry):
 
 def test_registry_save_and_load(tmp_path):
     """Test saving and loading registry."""
-    registry_path = tmp_path / "plugins.json"
+    registry_path = tmp_path / "plugins.toml"
     registry = Registry(str(registry_path))
 
     plugin = {
@@ -85,10 +85,10 @@ def test_remove_blacklist(temp_registry):
     assert len(temp_registry.data["blacklist"]) == 0
 
 
-def test_load_invalid_json(tmp_path):
-    """Test loading invalid JSON shows helpful error."""
-    registry_path = tmp_path / "invalid.json"
-    registry_path.write_text('{"invalid": json}')
+def test_load_invalid_toml(tmp_path):
+    """Test loading invalid TOML shows helpful error."""
+    registry_path = tmp_path / "invalid.toml"
+    registry_path.write_text('[invalid toml')
 
-    with pytest.raises(ValueError, match="Invalid JSON"):
+    with pytest.raises(ValueError, match="Invalid TOML"):
         Registry(str(registry_path))

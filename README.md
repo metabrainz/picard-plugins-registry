@@ -5,8 +5,8 @@ Official registry and maintenance tools for MusicBrainz Picard plugins.
 ## Overview
 
 This repository contains:
-- `plugins.json` - The official plugin registry
-- `registry` - CLI tool for maintaining the registry
+- `plugins.toml` - The official plugin registry (DO NOT EDIT MANUALLY)
+- `registry` - CLI tool for maintaining the registry (USE THIS)
 - Validation and testing infrastructure
 
 ## Setup
@@ -232,6 +232,21 @@ Display registry statistics by trust level and category:
 registry stats
 ```
 
+### Output Registry
+
+Output the registry in a specific format (useful for conversion or piping):
+
+```bash
+# Output as TOML (default)
+registry output
+
+# Output as JSON
+registry output --format json
+
+# Convert TOML to JSON
+registry output --format json > plugins.json
+```
+
 ## Trust Levels
 
 - **official** - Maintained by MusicBrainz Picard team
@@ -277,7 +292,7 @@ uv run pre-commit run --all-files
   - `utils.py` - Utility functions
   - `picard/` - Files copied from Picard (validator, constants)
 - `tests/` - Unit tests
-- `plugins.json` - The registry file
+- `plugins.toml` - The registry file
 
 ## Contributing
 
@@ -333,7 +348,7 @@ Plugin developers can submit their plugins to the registry by creating a pull re
 
 6. **Commit and push:**
    ```bash
-   git add plugins.json
+   git add plugins.toml
    git commit -m "Add plugin: Your Plugin Name"
    git push origin main
    ```

@@ -5,7 +5,7 @@ from unittest.mock import patch
 from registry_lib.cli import main
 
 
-@patch("sys.argv", ["registry", "--registry", "test.json", "plugin", "list"])
+@patch("sys.argv", ["registry", "--registry", "test.toml", "plugin", "list"])
 @patch("registry_lib.cli.Registry")
 def test_cli_plugin_list(mock_registry):
     """Test plugin list command."""
@@ -13,7 +13,7 @@ def test_cli_plugin_list(mock_registry):
 
     main()
 
-    mock_registry.assert_called_once_with("test.json")
+    mock_registry.assert_called_once_with("test.toml")
 
 
 @patch("sys.argv", ["registry", "plugin", "list", "--verbose"])
@@ -42,7 +42,7 @@ def test_cli_plugin_list_verbose(mock_registry):
     # Should print detailed info without errors
 
 
-@patch("sys.argv", ["registry", "--registry", "test.json", "blacklist", "list"])
+@patch("sys.argv", ["registry", "--registry", "test.toml", "blacklist", "list"])
 @patch("registry_lib.cli.Registry")
 def test_cli_blacklist_list(mock_registry):
     """Test blacklist list command."""
@@ -50,7 +50,7 @@ def test_cli_blacklist_list(mock_registry):
 
     main()
 
-    mock_registry.assert_called_once_with("test.json")
+    mock_registry.assert_called_once_with("test.toml")
 
 
 @patch("sys.argv", ["registry", "plugin", "add", "https://github.com/user/plugin", "--trust", "community"])
@@ -218,5 +218,41 @@ def test_cli_stats(mock_registry):
     }
 
     main()
+
+
+@patch("sys.argv", ["registry", "output"])
+@patch("registry_lib.cli.Registry")
+def test_cli_output_toml(mock_registry, capsys):
+    """Test output command with TOML format (default)."""
+    mock_registry.return_value.data = {
+        "api_version": "3.0",
+        "plugins": [{"id": "test", "name": "Test"}],
+        "blacklist": [],
+    }
+
+    main()
+
+    captured = capsys.readouterr()
+    assert "api_version = \"3.0\"" in captured.out
+    assert "plugins = [" in captured.out
+    assert "id = \"test\"" in captured.out
+
+
+@patch("sys.argv", ["registry", "output", "--format", "json"])
+@patch("registry_lib.cli.Registry")
+def test_cli_output_json(mock_registry, capsys):
+    """Test output command with JSON format."""
+    mock_registry.return_value.data = {
+        "api_version": "3.0",
+        "plugins": [{"id": "test", "name": "Test"}],
+        "blacklist": [],
+    }
+
+    main()
+
+    captured = capsys.readouterr()
+    assert '"api_version": "3.0"' in captured.out
+    assert '"plugins"' in captured.out
+    assert '"id": "test"' in captured.out
 
     # Should print stats without errors
