@@ -96,8 +96,51 @@ def cmd_output(args):
 
     if args.format == "json":
         print(json.dumps(registry.data, indent=2, ensure_ascii=False))
-    else:  # toml
+    elif args.format == "toml":
         print(tomli_w.dumps(registry.data, multiline_strings=True, indent=2))
+    elif args.format == "human":
+        plugins = registry.data['plugins']
+        blacklist = registry.data['blacklist']
+
+        print(f"Registry: {len(plugins)} plugins, {len(blacklist)} blacklist entries\n")
+        print("=" * 80)
+
+        for plugin in plugins:
+            print(f"\n• {plugin['id']}")
+            print(f"  Name: {plugin.get('name', 'N/A')}")
+            print(f"  UUID: {plugin['uuid']}")
+            print(f"  URL: {plugin['git_url']}")
+            print(f"  Trust: {plugin.get('trust_level', 'unknown')}")
+            if plugin.get('description'):
+                print(f"  Description: {plugin['description']}")
+            if plugin.get('categories'):
+                print(f"  Categories: {', '.join(plugin['categories'])}")
+            if plugin.get('authors'):
+                print(f"  Authors: {', '.join(plugin['authors'])}")
+            if plugin.get('maintainers'):
+                print(f"  Maintainers: {', '.join(plugin['maintainers'])}")
+            if plugin.get('license'):
+                print(f"  License: {plugin['license']}")
+            if plugin.get('redirects'):
+                print(f"  Redirects: {', '.join(plugin['redirects'])}")
+            if plugin.get('refs'):
+                print(f"  Refs ({len(plugin['refs'])}):")
+                for ref in plugin['refs']:
+                    print(f"    - {ref['ref']}: {ref['commit']}")
+
+        if blacklist:
+            print("\n" + "=" * 80)
+            print(f"\nBlacklist ({len(blacklist)} entries):\n")
+            for entry in blacklist:
+                print(f"• {entry.get('git_url', entry.get('uuid', 'Unknown'))}")
+                if entry.get('reason'):
+                    print(f"  Reason: {entry['reason']}")
+                if entry.get('date'):
+                    print(f"  Date: {entry['date']}")
+                print()
+    else:
+        print(f"Error: Unknown format '{args.format}'", file=sys.stderr)
+        sys.exit(1)
 
 
 def cmd_plugin_redirect(args):
@@ -579,7 +622,7 @@ def main():
     # Output command
     output_parser = subparsers.add_parser("output", help="Output registry in specified format")
     output_parser.add_argument(
-        "--format", choices=["json", "toml"], default="toml", help="Output format (default: toml)"
+        "--format", choices=["json", "toml", "human"], default="toml", help="Output format (default: toml)"
     )
     output_parser.set_defaults(func=cmd_output)
 
