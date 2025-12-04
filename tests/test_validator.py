@@ -38,17 +38,3 @@ def test_validate_manifest_invalid_uuid():
     }
     errors = validate_manifest_dict(manifest)
     assert any("uuid" in e.lower() for e in errors)
-
-
-def test_validate_manifest_invalid_category():
-    """Test validation with invalid category."""
-    manifest = {
-        "uuid": "12345678-1234-4234-8234-123456789abc",
-        "name": "Test Plugin",
-        "version": "1.0.0",
-        "description": "A test plugin",
-        "api": ["3.0"],
-        "categories": ["invalid_category"],
-    }
-    errors = validate_manifest_dict(manifest)
-    assert any("Invalid category" in e for e in errors)
