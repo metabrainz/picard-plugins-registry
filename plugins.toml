@@ -76,6 +76,33 @@ de = "Dieses Plugin fasst alle Performer-Tags in einer Mehrwertvariablen `%_perf
 fr = "Ce plugin combine toutes les balises performer dans une variable à valeurs multiples `%_performers%`."
 
 [[plugins]]
+id = "persistent-variables"
+uuid = "aa0f0588-84e0-4f5b-aa32-17657b4434a1"
+name = "Persistent Variables"
+description = "This plugin provides the ability to store and retrieve script variables that persist across tracks and albums."
+git_url = "https://github.com/rdswift/picard-plugin-persistent-variables"
+categories = [
+  "metadata",
+  "scripting",
+  "ui",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-04T04:10:55Z"
+updated_at = "2025-12-04T04:10:55Z"
+versioning_scheme = "semver"
+
+[plugins.name_i18n]
+de = "Persistente Variablen"
+fr = "Variables persistantes"
+
+[plugins.description_i18n]
+de = "Dieses Plugin bietet die Möglichkeit, Skriptvariablen zu speichern und abzurufen, die über Titel und Alben hinweg bestehen bleiben."
+fr = "Ce plugin permet de stocker et de récupérer des variables de script qui persistent d'une piste à l'autre et d'un album à l'autre."
+
+[[plugins]]
 id = "view-script-variables"
 uuid = "62e2a3fd-f4df-4b53-abc5-b73d2a36b672"
 name = "View script variables"
