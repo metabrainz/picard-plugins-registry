@@ -240,3 +240,64 @@ def test_update_plugin_uuid_changed(mock_fetch, temp_registry):
 
     with pytest.raises(ValueError, match="UUID mismatch.*UUIDs must not change"):
         update_plugin(temp_registry, "test-plugin")
+
+
+@patch("registry_lib.plugin.fetch_manifest")
+def test_update_plugin_invalid_manifest(mock_fetch, temp_registry):
+    """Test that updating plugin with invalid manifest raises error."""
+    # Add plugin first
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "Test description",
+        "api": ["3.0"],
+        "authors": ["Test Author"],
+    }
+    add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
+
+    # Try to update with invalid manifest (missing required field)
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        # Missing required 'name' field
+        "description": "Test description",
+        "api": ["3.0"],
+    }
+
+    from registry_lib.plugin import update_plugin
+
+    with pytest.raises(ValueError, match="Manifest validation failed.*Missing required field: name"):
+        update_plugin(temp_registry, "test-plugin")
+
+
+@patch("registry_lib.picard.validator.render_markdown")
+@patch("registry_lib.plugin.fetch_manifest")
+def test_update_plugin_long_description_with_html(mock_fetch, mock_render_markdown, temp_registry):
+    """Test that updating plugin with HTML in long_description raises error and calls render_markdown."""
+    # Add plugin first
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Test Plugin",
+        "version": "1.0.0",
+        "description": "Test description",
+        "api": ["3.0"],
+    }
+    add_plugin(temp_registry, "https://github.com/user/test-plugin", "community")
+
+    # Try to update with HTML in long_description
+    mock_fetch.return_value = {
+        "uuid": "12345678-1234-4234-8234-123456789abc",
+        "name": "Test Plugin",
+        "description": "Test description",
+        "api": ["3.0"],
+        "long_description": "This is a <b>bold</b> description with HTML tags",
+    }
+
+    from registry_lib.plugin import update_plugin
+
+    with pytest.raises(ValueError, match="Manifest validation failed.*contains HTML tags"):
+        update_plugin(temp_registry, "test-plugin")
+
+    mock_render_markdown.assert_called_once_with(
+        "This is a <b>bold</b> description with HTML tags", output_format='html'
+    )
