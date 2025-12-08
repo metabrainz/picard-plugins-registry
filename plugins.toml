@@ -145,4 +145,5 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-05T20:01:04Z"
-updated_at = "2025-12-05T20:01:04Z"
+updated_at = "2025-12-08T07:50:13Z"
+versioning_scheme = "semver"
