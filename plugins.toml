@@ -76,6 +76,23 @@ de = "Dieses Plugin fasst alle Performer-Tags in einer Mehrwertvariablen `%_perf
 fr = "Ce plugin combine toutes les balises performer dans une variable à valeurs multiples `%_performers%`."
 
 [[plugins]]
+id = "fanarttv"
+uuid = "d80f6f27-b141-438a-b644-fffb752e0ba2"
+name = "fanart.tv cover art"
+description = "Use cover art from fanart.tv"
+git_url = "https://git.sr.ht/~phw/picard-plugin-fanarttv"
+categories = [
+  "coverart",
+]
+trust_level = "trusted"
+authors = [
+  "Philipp Wolfer, Sambhav Kothari",
+]
+added_at = "2025-12-16T15:21:14Z"
+updated_at = "2025-12-16T15:21:14Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "persistent-variables"
 uuid = "aa0f0588-84e0-4f5b-aa32-17657b4434a1"
 name = "Persistent Variables"
