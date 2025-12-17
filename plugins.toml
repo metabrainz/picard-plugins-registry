@@ -9,7 +9,7 @@ git_url = "https://github.com/rdswift/picard-plugin-additional-artists-details"
 categories = [
   "metadata",
 ]
-trust_level = "official"
+trust_level = "trusted"
 authors = [
   "Bob Swift",
 ]
@@ -34,7 +34,7 @@ git_url = "https://github.com/rdswift/picard-plugin-additional-artists-variables
 categories = [
   "metadata",
 ]
-trust_level = "official"
+trust_level = "trusted"
 authors = [
   "Bob Swift",
 ]
@@ -90,6 +90,23 @@ authors = [
 ]
 added_at = "2025-12-16T15:21:14Z"
 updated_at = "2025-12-16T15:21:14Z"
+versioning_scheme = "semver"
+
+[[plugins]]
+id = "format-performer-tags"
+uuid = "2eb74c03-a488-4ffc-814d-20661782de95"
+name = "Format Performer Tags"
+description = "This plugin provides options with respect to the formatting of performer tags."
+git_url = "https://github.com/rdswift/picard-plugin-format-performer-tags"
+categories = [
+  "metadata",
+]
+trust_level = "community"
+authors = [
+  "Bob Swift, Philipp Wolfer",
+]
+added_at = "2025-12-17T22:36:05Z"
+updated_at = "2025-12-17T22:40:09Z"
 versioning_scheme = "semver"
 
 [[plugins]]
