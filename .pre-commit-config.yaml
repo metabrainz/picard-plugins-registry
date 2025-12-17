@@ -22,3 +22,9 @@ repos:
         types: [python]
         pass_filenames: false
         always_run: true
+      - id: registry-validate
+        name: Validate plugins registry
+        entry: uv run registry validate
+        language: system
+        pass_filenames: false
+        always_run: true
