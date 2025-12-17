@@ -93,6 +93,23 @@ updated_at = "2025-12-16T15:21:14Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "mod"
+uuid = "2e8596ef-0ee2-444b-b69b-92463c09f22b"
+name = "MOD files"
+description = "Support for loading and renaming various tracker module formats"
+git_url = "https://git.sr.ht/~phw/picard-plugin-mod"
+categories = [
+  "formats",
+]
+trust_level = "trusted"
+authors = [
+  "Philipp Wolfer",
+]
+added_at = "2025-12-17T18:42:57Z"
+updated_at = "2025-12-17T18:42:57Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "persistent-variables"
 uuid = "aa0f0588-84e0-4f5b-aa32-17657b4434a1"
 name = "Persistent Variables"
