@@ -86,11 +86,15 @@ categories = [
 ]
 trust_level = "trusted"
 authors = [
-  "Philipp Wolfer, Sambhav Kothari",
+  "Philipp Wolfer",
+  "Sambhav Kothari",
 ]
 added_at = "2025-12-16T15:21:14Z"
-updated_at = "2025-12-16T15:21:14Z"
+updated_at = "2025-12-18T06:22:13Z"
 versioning_scheme = "semver"
+maintainers = [
+  "Philipp Wolfer",
+]
 
 [[plugins]]
 id = "format-performer-tags"
