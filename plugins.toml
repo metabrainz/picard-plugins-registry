@@ -134,6 +134,24 @@ updated_at = "2025-12-18T05:39:02Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "loadasnat"
+uuid = "263cb3c3-2c44-4f31-9bc9-72010ffc1725"
+name = "Load as standalone recording"
+description = "Allows loading selected tracks as standalone recordings."
+git_url = "https://git.sr.ht/~phw/picard-plugin-loadasnat"
+categories = [
+  "ui",
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Philipp Wolfer",
+]
+added_at = "2025-12-18T16:56:18Z"
+updated_at = "2025-12-18T16:56:18Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "mod"
 uuid = "2e8596ef-0ee2-444b-b69b-92463c09f22b"
 name = "MOD files"
