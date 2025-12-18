@@ -114,6 +114,26 @@ updated_at = "2025-12-17T22:40:09Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "genre-mapper"
+uuid = "e8effffd-e057-467f-950c-f39d285920be"
+name = "Genre Mapper"
+description = """
+This plugin provides the ability to standardize genres in the \"genre\"
+tag by matching the genres as found to a standard genre as defined in
+the genre replacement mapping configuration option."""
+git_url = "https://github.com/rdswift/picard-plugin-genre-mapper"
+categories = [
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-18T05:28:10Z"
+updated_at = "2025-12-18T05:39:02Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "mod"
 uuid = "2e8596ef-0ee2-444b-b69b-92463c09f22b"
 name = "MOD files"
