@@ -223,6 +223,25 @@ updated_at = "2025-12-17T18:42:57Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "performer-tag-replace"
+uuid = "e561da4b-5b0c-4bc0-a8f6-d5384e445669"
+name = "Performer Tag Replace"
+description = """
+This plugin provides the ability to replace text in performer tags.
+"""
+git_url = "https://github.com/rdswift/picard-plugin-performer-tag-replace"
+categories = [
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-20T19:18:28Z"
+updated_at = "2025-12-20T19:19:06Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "persistent-variables"
 uuid = "aa0f0588-84e0-4f5b-aa32-17657b4434a1"
 name = "Persistent Variables"
