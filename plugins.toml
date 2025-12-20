@@ -215,6 +215,28 @@ de = "Dieses Plugin bietet die Möglichkeit, Skriptvariablen zu speichern und ab
 fr = "Ce plugin permet de stocker et de récupérer des variables de script qui persistent d'une piste à l'autre et d'un album à l'autre."
 
 [[plugins]]
+id = "replaygain2"
+uuid = "74807b76-c451-419f-bbd4-42a78e2444a6"
+name = "ReplayGain 2.0"
+description = "Calculates ReplayGain information for tracks and albums"
+git_url = "https://github.com/metabrainz/picard-plugin-replaygain2.git"
+categories = [
+  "metadata",
+  "ui",
+]
+trust_level = "official"
+authors = [
+  "complexlogic",
+  "Philipp Wolfer",
+]
+added_at = "2025-12-20T15:25:15Z"
+updated_at = "2025-12-20T15:25:15Z"
+maintainers = [
+  "MusicBrainz Picard Team",
+]
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "view-script-variables"
 uuid = "62e2a3fd-f4df-4b53-abc5-b73d2a36b672"
 name = "View script variables"
