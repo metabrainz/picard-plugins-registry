@@ -309,6 +309,23 @@ updated_at = "2025-12-20T21:22:24Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "theaudiodb"
+uuid = "ed113c88-25af-4e35-b046-993226cdd46a"
+name = "TheAudioDB cover art"
+description = "Use cover art from TheAudioDB"
+git_url = "https://git.sr.ht/~phw/picard-plugin-theaudiodb"
+categories = [
+  "coverart",
+]
+trust_level = "trusted"
+authors = [
+  "Philipp Wolfer",
+]
+added_at = "2025-12-21T00:06:02Z"
+updated_at = "2025-12-21T00:06:02Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "view-script-variables"
 uuid = "62e2a3fd-f4df-4b53-abc5-b73d2a36b672"
 name = "View script variables"
