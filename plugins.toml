@@ -342,7 +342,7 @@ authors = [
 added_at = "2025-12-03T23:44:25Z"
 updated_at = "2025-12-22T18:12:02Z"
 maintainers = [
-  "Bob Swift",
+  "MusicBrainz Picard Team",
 ]
 versioning_scheme = "semver"
 redirect_from = [
