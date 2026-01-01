@@ -188,6 +188,24 @@ updated_at = "2025-12-27T01:44:31Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "language-name"
+uuid = "90505bdf-6676-4d54-98af-89e965606123"
+name = "Language Name"
+description = "This plugin provides a new script function `$language_name()` to replace the three-character language code with the full name of the language."
+git_url = "https://github.com/rdswift/picard-plugin-language-name"
+categories = [
+  "scripting",
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2025-12-31T21:51:46Z"
+updated_at = "2025-12-31T21:51:46Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "loadasnat"
 uuid = "263cb3c3-2c44-4f31-9bc9-72010ffc1725"
 name = "Load as standalone recording"
