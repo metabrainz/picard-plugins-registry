@@ -155,7 +155,7 @@ versioning_scheme = "semver"
 id = "keep-only-tags"
 uuid = "910bba9b-6259-43ac-9ceb-c8d2b6908c18"
 name = "Keep Only Tags"
-description = "This plugin allows the user to determine which tags are written to the output files by Picard."
+description = "This plugin provides a different approach for the user to determine which tags are written to the output files by Picard."
 git_url = "https://github.com/rdswift/picard-plugin-keep-only-tags"
 categories = [
   "metadata",
