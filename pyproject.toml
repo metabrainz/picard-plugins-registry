@@ -12,6 +12,9 @@ dependencies = [
     "tomli-w>=1.0.0",
 ]
 
+[project.scripts]
+registry = "registry_lib.cli:main"
+
 [dependency-groups]
 dev = [
     "pytest>=8.1",
@@ -19,9 +22,6 @@ dev = [
     "ruff>=0.12.8",
     "pre-commit>=4.2.0",
 ]
-
-[project.scripts]
-registry = "registry_lib.cli:main"
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
