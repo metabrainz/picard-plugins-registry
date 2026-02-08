@@ -1,6 +1,7 @@
 """Command-line interface."""
 
 import argparse
+import os
 import sys
 
 from registry_lib.blacklist import add_blacklist
@@ -635,4 +636,7 @@ def main():
 
 
 if __name__ == "__main__":
+    # Ensure utf-8 is used for IO encoding on all platforms. Specifically on Windows
+    # this fixes encoding issues during console output in certain cases.
+    os.environ['PYTHONIOENCODING'] = 'utf-8'
     main()
