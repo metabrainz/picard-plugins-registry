@@ -1,6 +1,21 @@
 api_version = "3.0"
 
 [[plugins]]
+id = "add-to-collection"
+uuid = "3713d8f5-72b0-401d-9ec9-3818380bc576"
+name = "Add to Collection"
+description = "Adds any saved release to one of your user collections"
+git_url = "https://github.com/dvirtz/picard-plugin-add-to-collection"
+categories = []
+trust_level = "community"
+authors = [
+  "Dvir Yitzchaki (dvirtz@gmail.com)",
+]
+added_at = "2026-02-05T09:48:44Z"
+updated_at = "2026-02-05T09:48:44Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "additional-artists-details"
 uuid = "81fd1f5f-f723-498f-a82e-17fb4163c83a"
 name = "Additional Artists Details"
