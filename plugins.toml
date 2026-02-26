@@ -167,6 +167,23 @@ updated_at = "2025-12-18T05:39:02Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "haikuattrs"
+uuid = "266d3e71-7d42-4ceb-bc88-8b4fd6720a45"
+name = "Haiku BFS Attributes"
+description = "Save and load metadata to/from Haiku BFS attributes."
+git_url = "https://git.sr.ht/~phw/picard-plugin-haikuattrs"
+categories = [
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Philipp Wolfer",
+]
+added_at = "2026-02-08T14:10:09Z"
+updated_at = "2026-02-08T14:10:09Z"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "keep-only-tags"
 uuid = "910bba9b-6259-43ac-9ceb-c8d2b6908c18"
 name = "Keep Only Tags"
