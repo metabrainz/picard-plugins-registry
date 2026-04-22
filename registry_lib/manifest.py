@@ -13,7 +13,7 @@ import requests
 try:
     import pygit2
 except ImportError:
-    pygit2 = None
+    pygit2 = None  # ty: ignore[invalid-assignment,unused-ignore-comment]
 
 
 if sys.version_info >= (3, 11):
@@ -21,7 +21,10 @@ if sys.version_info >= (3, 11):
 else:
     import tomli as tomllib
 
-from typing import Any
+from typing import (
+    Any,
+    cast,
+)
 
 from registry_lib.picard.validator import validate_manifest_dict
 
@@ -65,19 +68,24 @@ def _fetch_file_pygit2(git_url: str, ref: str, path: str) -> str:
     assert pygit2 is not None
     with tempfile.TemporaryDirectory() as tmpdir:
         try:
-            deadline = time.monotonic() + CLONE_TIMEOUT
 
-            def _check_timeout(stats: Any) -> None:
-                if time.monotonic() > deadline:
-                    raise TimeoutError(f"Clone timed out after {CLONE_TIMEOUT}s")
+            class TimeoutRemoteCallbacks(pygit2.RemoteCallbacks):
+                def __init__(self, timeout: int) -> None:
+                    super().__init__()
+                    self._timeout = timeout
+                    self._deadline = time.monotonic() + timeout
 
-            callbacks = pygit2.RemoteCallbacks(transfer_progress=_check_timeout)
+                def transfer_progress(self, stats: pygit2.remotes.TransferProgress) -> None:
+                    if time.monotonic() > self._deadline:
+                        raise TimeoutError(f"Clone timed out after {self._timeout}s")
+
+            callbacks = TimeoutRemoteCallbacks(CLONE_TIMEOUT)
             repo = pygit2.clone_repository(git_url, tmpdir, bare=True, callbacks=callbacks)
             commit = repo.revparse_single(ref)
             if commit.type == pygit2.GIT_OBJECT_TAG:
                 commit = commit.peel(pygit2.Commit)
             entry = commit.peel(pygit2.Tree)[path]
-            return repo[entry.id].data.decode()
+            return cast(pygit2.Blob, repo[entry.id]).data.decode()
         except TimeoutError as e:
             raise GitOperationError(str(e)) from e
         except (KeyError, pygit2.GitError) as e:
