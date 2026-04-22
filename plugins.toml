@@ -307,6 +307,37 @@ updated_at = "2025-12-17T18:42:57Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "opencc"
+uuid = "9493e89d-ca13-4be3-9ed6-a2d6195dfce9"
+name = "Chinese script conversion"
+description = "Convert track listings between Traditional Chinese and Simplified Chinese script."
+git_url = "https://git.sr.ht/~phw/picard-plugin-opencc"
+categories = [
+  "scripting",
+  "ui",
+]
+trust_level = "trusted"
+authors = [
+  "Philipp Wolfer",
+]
+added_at = "2026-04-22T08:09:52Z"
+updated_at = "2026-04-22T08:09:52Z"
+license = "MIT"
+license_url = "https://opensource.org/licenses/MIT"
+long_description = """
+Convert track listings between Traditional Chinese and Simplified Chinese script.
+
+The conversion can be done manually or with scripting. For manual use right click
+on album, tracks, clusters or files and choose the \"Convert to Simplified Chinese\"
+or \"Convert to Simplified Chinese\" action.
+
+For scripting you can use the following tagger functions:
+
+- `$convert_to_simplified_chinese(text)`
+- `$convert_to_traditional_chinese(text)`"""
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "performer-tag-replace"
 uuid = "e561da4b-5b0c-4bc0-a8f6-d5384e445669"
 name = "Performer Tag Replace"
