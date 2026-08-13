@@ -25,11 +25,22 @@ For local development you first need to clone the plugin's git repository into a
 
 It is recommended to set up a virtual Python environment for the development of the plugin, e.g. by using [venv](https://docs.python.org/3/library/venv.html).
 
-Inside the plugin directory, create the virtual environment and activate it:
+Inside the plugin directory, create the virtual environment:
 
 ```bash
 python -m venv .venv
+```
+
+To activate the virtual environment, run:
+
+```bash
 source .venv/bin/activate
+```
+
+On Windows, the virtual environment activation command is slightly different:
+
+```pwsh
+.venv\Scripts\activate
 ```
 
 To install a plugin for development inside Picard, you can install the plugin without git support. This allows testing any code changes directly without the need to commit and push changes. Disabling and enabling the plugin within Picard is enough to have Picard load the changed code again.
