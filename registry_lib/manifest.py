@@ -11,7 +11,7 @@ import requests
 
 
 try:
-    import pygit2
+    import pygit2  # ty: ignore[unresolved-import,unused-ignore-comment]
 except ImportError:
     pygit2 = None  # ty: ignore[invalid-assignment,unused-ignore-comment]
 
