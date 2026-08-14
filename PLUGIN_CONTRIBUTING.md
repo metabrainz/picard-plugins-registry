@@ -21,7 +21,7 @@ Please also read the [MetaBrainz Contribution Guidelines](https://github.com/met
 For local development you first need to clone the plugin's git repository into a local directory. See the plugin's repository page for instructions and the clone URL to use.
 
 > [!NOTE]
-> You should not clone the repository directly into Picard's plugin install directory. The plugin directory is managed by Picard. Instead, clone it into a separate development directory and install the plugin as described below.\
+> You should not clone the repository directly into Picard's plugin install directory. The plugin directory is managed by Picard. Instead, clone it into a separate development directory and install the plugin as described below.
 
 It is recommended to set up a virtual Python environment for the development of the plugin, e.g. by using [venv](https://docs.python.org/3/library/venv.html).
 
