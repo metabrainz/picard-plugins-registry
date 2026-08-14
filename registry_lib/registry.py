@@ -2,20 +2,15 @@
 
 from pathlib import Path
 import sys
+from typing import Any
+
+import tomli_w
 
 
 if sys.version_info >= (3, 11):
     import tomllib
 else:
     import tomli as tomllib
-
-try:
-    import tomli_w
-except ImportError:
-    tomli_w = None  # ty: ignore[invalid-assignment]
-
-
-from typing import Any
 
 
 class Registry:
@@ -50,8 +45,6 @@ class Registry:
 
     def save(self) -> None:
         """Save registry to file."""
-        if not tomli_w:
-            raise RuntimeError("tomli-w is required to save registry")
         # Sort plugins by ID for consistent ordering
         self.data["plugins"] = sorted(self.data["plugins"], key=lambda p: p["id"])
 

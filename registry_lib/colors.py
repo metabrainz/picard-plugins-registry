@@ -20,7 +20,7 @@ def init(*, no_color: bool = False) -> None:
 
     # Enable ANSI colors on Windows
     if _enabled and sys.platform == "win32":
-        os.system("")  # noqa: S605
+        os.system("")  # noqa: S605  # ty: ignore[deprecated]
 
 
 def _wrap(code: str, text: str) -> str:
