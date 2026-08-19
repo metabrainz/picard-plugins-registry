@@ -643,6 +643,25 @@ Une fois les ISRC soumis, un message s'affichera pour indiquer si la soumission 
 fr = "Soumettre un code ISRC"
 
 [[plugins]]
+id = "tag-filter-joiner"
+uuid = "86bdc092-6097-4ead-8d37-3e9128b6a7c1"
+name = "Tag Filter & Joiner"
+description = "Ignore selected tags and/or join multi-value tags with custom separators."
+git_url = "https://github.com/rpmzine/picard-plugin-tag-filter-joiner"
+categories = [
+  "metadata",
+]
+trust_level = "community"
+authors = [
+  "rpmzine",
+]
+added_at = "2026-05-13T13:56:00Z"
+updated_at = "2026-05-13T13:56:00Z"
+license = "MIT"
+license_url = "https://opensource.org/licenses/MIT"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "theaudiodb"
 uuid = "ed113c88-25af-4e35-b046-993226cdd46a"
 name = "TheAudioDB cover art"
