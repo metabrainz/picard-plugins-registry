@@ -172,6 +172,44 @@ To use this plugin you have to register a personal API key on [fanart.tv](https:
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [[plugins]]
+id = "file-writer"
+uuid = "6dc10dc7-15ba-423f-874a-4a446cd949c3"
+name = "File Writer"
+description = "This plugin adds a scripting function $writeline() to allow writing text to an output file."
+git_url = "https://github.com/rdswift/picard-plugin-file-writer"
+categories = [
+  "scripting",
+  "other",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2026-06-13T15:42:17Z"
+updated_at = "2026-06-13T15:42:17Z"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/file_writer/user_guide.html"
+license = "GPL-2.0 or later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin adds a scripting function `$writeline()` to allow writing text to an output file.
+
+**Use with caution, because if not properly configured it could overwrite existing files, resulting in
+unintended consequences!**
+
+Usage: **$writeline(file,text[,reset])**
+
+This will write `text` (followed by a newline) to `file`. The text will be appended to the file
+unless `reset` is set, in which case the file will be overwritten. If the destination `file` path
+is not specified as an absolute path to the destination file (beginning with a Windows drive letter
+and colon, or with a path separator), then the path will be considered relative to the ***Destination
+directory*** specified in Picard's **File Naming Options** settings. If the target path does not exist,
+it will be created automatically.
+
+***NOTE:*** The text will be written to the file with a character encoding of UTF-8."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-file-writer/issues"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "format-performer-tags"
 uuid = "2eb74c03-a488-4ffc-814d-20661782de95"
 name = "Format Performer Tags"
