@@ -1,8 +1,7 @@
-# -*- coding: utf-8 -*-
-#
 # Picard, the next-generation MusicBrainz tagger
 #
-# Copyright (C) 2025 Philipp Wolfer
+# Copyright (C) 2025-2026 Laurent Monin
+# Copyright (C) 2025-2026 Philipp Wolfer
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,8 +14,8 @@
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301, USA.
+# along with this program; if not, see <https://www.gnu.org/licenses/>.
+
 
 """Standalone manifest validation with minimal dependencies.
 
@@ -228,7 +227,7 @@ def _is_valid_uuid(uuid_str: str) -> tuple[bool, str | None]:
     if _is_placeholder_uuid(uuid_str):
         return False, (
             f"Field 'uuid' appears to be a placeholder/test UUID (got '{uuid_str}'). "
-            "Generate a real UUID using 'picard-plugins --manifest', 'uuidgen', or Python's uuid.uuid4()"
+            "Generate a real UUID using 'picard-cli plugins manifest', 'uuidgen', or Python's uuid.uuid4()"
         )
 
     return True, None
@@ -307,8 +306,16 @@ def validate_manifest_dict(manifest_data):
     for section in ['name_i18n', 'description_i18n', 'long_description_i18n']:
         if section in manifest_data:
             value = manifest_data[section]
-            if not value or (isinstance(value, dict) and len(value) == 0):
+            if not isinstance(value, dict):
+                errors.append(f"Section '{section}' must be a table of locale -> string")
+            elif len(value) == 0:
                 errors.append(f"Section '{section}' is present but empty")
+            else:
+                for locale, text in value.items():
+                    if not _is_valid_locale(locale):
+                        errors.append(f"Section '{section}' has invalid locale key '{locale}'")
+                    if not isinstance(text, str):
+                        errors.append(f"Section '{section}' value for locale '{locale}' must be a string")
 
     # Validate markdown in long_description_i18n
     if 'long_description_i18n' in manifest_data:
