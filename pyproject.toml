@@ -69,6 +69,11 @@ python-version = "3.11"
 [tool.ty.rules]
 # tomli is only imported on Python < 3.11, tomli_w and pygit2 are optional
 unresolved-import = "warn"
+# Suppressions for optional imports (e.g. pygit2) are needed only when the
+# module is absent; when it is installed the suppression is redundant. Since
+# CI installs all extras but local dev may not, don't fail on redundant
+# suppressions.
+unused-ignore-comment = "ignore"
 
 [tool.ty.src]
 # Files copied from Picard source, not maintained here
