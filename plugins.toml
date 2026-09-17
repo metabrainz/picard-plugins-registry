@@ -396,6 +396,27 @@ file to detect the codec. For MP4 files it also checks the reported bitrate.*"""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [[plugins]]
+id = "lrclib-v3"
+uuid = "df46dced-1490-4c64-80e7-79f6b6ae222d"
+name = "LRCLIB Lyrics"
+description = "Fetch and embed lyrics from LRCLIB, with support for importing, creating, and renaming .lrc sidecar files."
+git_url = "https://github.com/Opt6/picard-lrclib-v3"
+categories = [
+  "metadata",
+]
+trust_level = "community"
+authors = [
+  "Glicole",
+  "Opt6",
+]
+added_at = "2026-08-25T23:55:29Z"
+updated_at = "2026-08-25T23:55:29Z"
+license = "MIT"
+license_url = "https://opensource.org/licenses/MIT"
+long_description = "Fetch and embed lyrics from LRCLIB's crowdsourced database. Prefers synchronized lyrics when available, falls back to plain lyrics, supports automatic fetching on load/save, manual lookup and search, importing existing .lrc files, renaming .lrc files to follow Picard's final audio filenames, creating .lrc or .txt sidecars, instrumental filtering, overwrite protection, and orphaned LRC cleanup."
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "mod"
 uuid = "2e8596ef-0ee2-444b-b69b-92463c09f22b"
 name = "MOD files"
