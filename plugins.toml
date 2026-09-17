@@ -257,6 +257,29 @@ The following BFS file attributes are supported:
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [[plugins]]
+id = "instruments"
+uuid = "96c25fb6-2eba-42b1-b7e7-992416eb1e91"
+name = "Instruments"
+description = "This plugin adds a multi-valued variable (~instruments) containing all the instruments (including vocals), for use in scripts."
+git_url = "https://github.com/metabrainz/picard-plugin-instruments"
+categories = [
+  "metadata",
+]
+trust_level = "official"
+authors = [
+  "David Mandelberg",
+]
+added_at = "2026-09-17T20:47:40Z"
+updated_at = "2026-09-17T20:47:40Z"
+license = "GPL-3.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-3.0.html"
+long_description = "This plugin adds a multi-valued variable (~instruments) containing all the instruments (including vocals), for use in scripts."
+maintainers = [
+  "MusicBrainz Picard Team",
+]
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "keep-only-tags"
 uuid = "910bba9b-6259-43ac-9ceb-c8d2b6908c18"
 name = "Keep Only Tags"
