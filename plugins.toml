@@ -228,6 +228,43 @@ updated_at = "2025-12-17T22:40:09Z"
 versioning_scheme = "semver"
 
 [[plugins]]
+id = "generate-playlist"
+uuid = "6956996d-cded-4fba-8e12-9df00d46cbe7"
+name = "Generate Playlist"
+description = "This plugin allows the user to generate a playlist from selected albums in Picard. The output is written to a `*.m3u8` file with UTF-8 encoded text."
+git_url = "https://github.com/rdswift/picard-plugin-generate-playlist"
+categories = [
+  "other",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2026-10-08T20:16:47Z"
+updated_at = "2026-10-08T20:16:47Z"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/generate_playlist/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin allows the user to generate a playlist from selected albums in Picard. The output is written to a `*.m3u8` file with UTF-8 encoded text. Relative pathnames are used where audio files are in the same directory as the playlist, otherwise absolute (full) pathnames are used.
+
+The plugin is based on the Picard v2 \"Generate M3U playlist\" plugin by Francis Chin, Sambhav Kothari, Chris Hylen, and has been converted for use with Picard v3 by Bob Swift."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-generate-playlist/issues"
+versioning_scheme = "semver"
+
+[plugins.description_i18n]
+fr = "Ce plugin permet à l'utilisateur de créer une liste de lecture à partir d'albums sélectionnés dans Picard. Le résultat est enregistré dans un fichier `*.m3u8` contenant du texte encodé en UTF-8."
+
+[plugins.long_description_i18n]
+fr = """
+Ce plugin permet à l'utilisateur de générer une liste de lecture à partir d'albums sélectionnés dans Picard. Le résultat est enregistré dans un fichier `*.m3u8` contenant du texte encodé en UTF-8. Des chemins d'accès relatifs sont utilisés lorsque les fichiers audio se trouvent dans le même répertoire que la liste de lecture ; dans le cas contraire, ce sont des chemins d'accès absolus (complets) qui sont utilisés.
+
+Ce plugin est basé sur le plugin « Generate M3U playlist » de Picard v2, créé par Francis Chin, Sambhav Kothari et Chris Hylen, et a été adapté pour fonctionner avec Picard v3 par Bob Swift."""
+
+[plugins.name_i18n]
+fr = "Créer une liste de lecture"
+
+[[plugins]]
 id = "genre-mapper"
 uuid = "e8effffd-e057-467f-950c-f39d285920be"
 name = "Genre Mapper"
