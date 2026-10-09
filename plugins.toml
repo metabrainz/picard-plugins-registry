@@ -494,6 +494,40 @@ file to detect the codec. For MP4 files it also checks the reported bitrate.*"""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [[plugins]]
+id = "matroska-tagger"
+uuid = "1c97b575-792b-4e65-b390-60b2d87b6abd"
+name = "Matroska Tagger"
+description = "Read and write tags in Matroska (.mkv, .mka) files via MKVToolNix."
+git_url = "https://github.com/BenMcLean/picard-plugin-matroska-tagger"
+categories = [
+  "formats",
+]
+trust_level = "community"
+authors = [
+  "Ben McLean",
+]
+added_at = "2026-10-09T16:30:08Z"
+updated_at = "2026-10-09T16:30:08Z"
+homepage = "https://github.com/BenMcLean/picard-plugin-matroska-tagger"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+Adds support for reading and writing tags in Matroska video (.mkv) and audio (.mka) files.
+
+Requires [MKVToolNix](https://mkvtoolnix.download) to be installed. The folder containing
+`mkvmerge`, `mkvextract` and `mkvpropedit` can be set in the plugin's options page; leave it
+empty to use the system PATH.
+
+Options:
+- Remove chapter data when saving.
+- Use the original release date (instead of this release's date) as the DATE tag."""
+report_bugs_to = "https://github.com/BenMcLean/picard-plugin-matroska-tagger/issues"
+refs = [
+  { name = "master" },
+]
+versioning_scheme = "calver"
+
+[[plugins]]
 id = "mod"
 uuid = "2e8596ef-0ee2-444b-b69b-92463c09f22b"
 name = "MOD files"
