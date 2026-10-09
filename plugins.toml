@@ -66,6 +66,31 @@ de = "Dieses Plugin stellt spezielle Album- und Titelvariablen für die Verwendu
 fr = "Ce plugin fournit des variables spécialisées pour les albums et les pistes à utiliser dans les scripts de nommage."
 
 [[plugins]]
+id = "album-genre-from-tracks"
+uuid = "9f6d4b0e-7c21-4b8c-a0c9-5f3a2e1d6b74"
+name = "Album Genre from Tracks"
+description = "Calculates the album-level Genre value from the genres of its tracks."
+git_url = "https://github.com/ragart/picard-album-genre-from-tracks"
+categories = [
+  "metadata",
+  "ui",
+]
+trust_level = "community"
+authors = [
+  "Salvador Banderas Rovira",
+]
+added_at = "2026-09-02T06:53:31Z"
+updated_at = "2026-09-02T07:00:22Z"
+license = "GPL-3.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-3.0.html"
+maintainers = [
+  "Salvador Banderas Rovira",
+]
+refs = [
+  { name = "3.x", description = "Picard 3.x stable branch" },
+]
+
+[[plugins]]
 id = "combine-performer-tags"
 uuid = "4779bcaf-1bda-4580-8c55-1fbe28771ce8"
 name = "Combine Performer Tags"
