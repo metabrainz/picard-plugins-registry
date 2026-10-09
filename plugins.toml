@@ -602,6 +602,44 @@ de = "Dieses Plugin bietet die Möglichkeit, Skriptvariablen zu speichern und ab
 fr = "Ce plugin permet de stocker et de récupérer des variables de script qui persistent d'une piste à l'autre et d'un album à l'autre."
 
 [[plugins]]
+id = "remove-matched-albums"
+uuid = "63c024d9-183b-4dbb-b31e-b6b4db7af439"
+name = "Remove Matched Albums"
+description = "This plugin allows the user to remove completely matched and saved albums from the album pane."
+git_url = "https://github.com/rdswift/picard-plugin-remove-matched-albums"
+categories = [
+  "ui",
+  "other",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2026-10-09T21:13:48Z"
+updated_at = "2026-10-09T21:13:48Z"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/remove_matched_albums/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin allows the user to remove completely matched and saved albums from the album pane. It provides an action under the \"Plugin Tools\" section of Picard's manu menu.
+
+The plugin is based on the Picard v2 \"Remove Perfect Albums\" plugin by ichneumon and hrglgrmpf, and has been converted for use with Picard v3 by Bob Swift."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-remove-matched-albums/issues"
+versioning_scheme = "semver"
+
+[plugins.description_i18n]
+fr = "Ce plugin permet à l'utilisateur de supprimer du volet des albums les albums dont la correspondance est parfaite et qui ont été enregistrés."
+
+[plugins.long_description_i18n]
+fr = """
+Ce plugin permet à l'utilisateur de supprimer du volet « Albums » les albums dont la correspondance est parfaite et qui ont été enregistrés. Il propose une action dans la section « Outils du plugin » du menu principal de Picard.
+
+Ce plugin s'inspire du plugin « Remove Perfect Albums » pour Picard v2, créé par ichneumon et hrglgrmpf, et a été adapté pour Picard v3 par Bob Swift."""
+
+[plugins.name_i18n]
+fr = "Supprimer les albums correspondants"
+
+[[plugins]]
 id = "replaygain2"
 uuid = "74807b76-c451-419f-bbd4-42a78e2444a6"
 name = "ReplayGain 2.0"
