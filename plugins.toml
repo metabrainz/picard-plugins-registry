@@ -12,8 +12,11 @@ authors = [
   "Dvir Yitzchaki (dvirtz@gmail.com)",
 ]
 added_at = "2026-02-05T09:48:44Z"
-updated_at = "2026-02-05T09:48:44Z"
+updated_at = "2026-10-11T18:45:39Z"
 versioning_scheme = "semver"
+homepage = "https://github.com/dvirtz/picard-plugin-add-to-collection"
+license = "MIT"
+license_url = "https://spdx.org/licenses/MIT.html"
 
 [[plugins]]
 id = "additional-artists-details"
@@ -29,16 +32,38 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-01T11:16:37Z"
-updated_at = "2025-12-02T21:36:08Z"
+updated_at = "2026-10-11T18:45:40Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/additional_artists_details/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin provides specialized album and track variables with artist details for use in tagging and naming scripts. Note that this creates
+additional calls to the MusicBrainz API for the artist and area information, and this will slow down processing. This will be particularly
+noticable when there are many different album or track artists, such as on a [Various Artists] release. There is an option to disable track
+artist processing, which can significantly increase the processing speed if you are only interested in album artist details."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-additional-artists-details/issues"
 
 [plugins.name_i18n]
 de = "Weitere Details zu den Künstlern"
-fr = "Détails supplémentaires sur les artistes"
+fr = "Informations supplémentaires sur les artistes"
+zh_CN = "附加艺术家详细信息"
 
 [plugins.description_i18n]
 de = "Dieses Plugin stellt spezielle Album- und Titelvariablen mit Künstlerinformationen zur Verwendung in Tagging- und Benennungsskripten bereit."
-fr = "Ce plugin fournit des variables spécialisées pour les albums et les pistes, avec des informations sur les artistes, à utiliser dans les scripts de balisage et de nommage."
+fr = "Ce plugin fournit des variables spécifiques aux albums et aux morceaux, ainsi que des informations sur les artistes, destinées à être utilisées dans les scripts de balisage et de nommage."
+zh_CN = "此插件提供具有艺术家详细信息的专用专辑和音轨变量，用于标签和命名脚本。"
+
+[plugins.long_description_i18n]
+de = """
+Dieses Plugin stellt spezielle Album- und Titelvariablen mit Künstlerinformationen zur Verwendung in Tagging- und Benennungsskripten bereit.
+Beachten Sie, dass dadurch zusätzliche Aufrufe der MusicBrainz-API für die Künstler- und Gebietsinformationen erzeugt werden, was die
+Verarbeitung verlangsamt. Dies macht sich besonders dann bemerkbar, wenn es viele verschiedene Album- oder Titelkünstler gibt, wie
+beispielsweise bei einer Veröffentlichung von [Various Artists]. Es gibt eine Option zum Deaktivieren der Track-Interpretenverarbeitung,
+wodurch die Verarbeitungsgeschwindigkeit erheblich gesteigert werden kann, wenn Sie nur an den Details zum Albuminterpreten interessiert sind.
+"""
+fr = "Ce plugin fournit des variables spécialisées pour les albums et les pistes, ainsi que des informations sur les artistes, destinées à être utilisées dans les scripts de balisage et de nommage. Notez que cela génère des appels supplémentaires à l'API MusicBrainz pour obtenir les informations sur les artistes et la région, ce qui ralentit le traitement. Ce ralentissement sera particulièrement perceptible lorsqu'il y a de nombreux artistes différents pour les albums ou les pistes, comme c'est le cas sur un album [Various Artists]. Une option permet de désactiver le traitement des artistes de pistes, ce qui peut augmenter considérablement la vitesse de traitement si vous ne vous intéressez qu'aux informations sur l'artiste de l'album."
+zh_CN = "此插件提供具有艺术家详细信息的专用专辑和音轨变量，用于标签和命名脚本。请注意，这会为艺术家和地区信息创建额外的 MusicBrainz API 调用，并会减慢处理速度。当有大量不同的专辑或音轨艺术家时，例如在 [Various Artists] 发行品上，这种情况会特别明显。有一个选项可以禁用音轨艺术家处理，如果您只对专辑艺术家详细信息感兴趣，这可以显著提高处理速度。"
 
 [[plugins]]
 id = "additional-artists-variables"
@@ -54,16 +79,33 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-01T17:55:54Z"
-updated_at = "2025-12-02T22:05:40Z"
+updated_at = "2026-10-11T18:45:40Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/additional_artists_variables/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = "This plugin provides specialized album and track variables for use in naming scripts."
+report_bugs_to = "https://github.com/rdswift/picard-plugin-additional-artists-variables/issues"
 
 [plugins.name_i18n]
 de = "Zusätzliche Künstlervariablen"
 fr = "Variables supplémentaires relatives aux artistes"
+zh_CN = "附加艺术家变量"
 
 [plugins.description_i18n]
 de = "Dieses Plugin stellt spezielle Album- und Titelvariablen für die Verwendung in Benennungsskripten bereit."
-fr = "Ce plugin fournit des variables spécialisées pour les albums et les pistes à utiliser dans les scripts de nommage."
+fr = "Ce plugin fournit des variables spécifiques aux albums et aux pistes, destinées à être utilisées dans les scripts de nommage."
+zh_CN = "此插件为文件命名脚本提供专门的专辑和音轨变量。"
+
+[plugins.long_description_i18n]
+de = """
+Dieses Plugin stellt spezielle Album- und Titelvariablen für die Verwendung in Benennungsskripten bereit. Es basiert auf
+dem Plugin „Album Artist Extension“, erweitert jedoch die Funktionalität um Titelkünstler. Beachten Sie, dass es nicht als
+direkter Ersatz für das Plugin „Album Artist Extension“ verwendet werden kann, da die Variablen mit unterschiedlichen Namen
+bereitgestellt werden.  Bei einem Wechsel zu diesem Plugin müssen daher Änderungen an bestehenden Skripten vorgenommen werden.
+"""
+fr = "Ce plugin fournit des variables spécifiques aux albums et aux pistes, destinées à être utilisées dans les scripts de nommage."
+zh_CN = "此插件为文件命名脚本提供专门的专辑和音轨变量。"
 
 [[plugins]]
 id = "combine-performer-tags"
@@ -79,16 +121,33 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-03T18:05:22Z"
-updated_at = "2025-12-03T18:07:53Z"
+updated_at = "2026-10-11T18:45:40Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/combine_performer_tags/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin combines all performer tags into a multi-value variable `%_performers%`.
+The format of the resulting variable items can be customized in the option settings page."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-combine-performer-tags/issues"
 
 [plugins.name_i18n]
 de = "Performer-Tags kombinieren"
-fr = "Combiner les balises Performer"
+fr = "Combiner les balises d'artiste"
+zh_CN = "合并表演者标签"
 
 [plugins.description_i18n]
 de = "Dieses Plugin fasst alle Performer-Tags in einer Mehrwertvariablen `%_performers%` zusammen."
-fr = "Ce plugin combine toutes les balises performer dans une variable à valeurs multiples `%_performers%`."
+fr = "Ce plugin regroupe toutes les balises d'interprète dans une variable à valeurs multiples `%_performers%`."
+zh_CN = "此插件将所有表演者标签合并到一个多值变量 `%_performers%` 中。"
+
+[plugins.long_description_i18n]
+de = """
+Dieses Plugin fasst alle Performer-Tags in einer Mehrwertvariablen `%_performers%` zusammen.
+Das Format der resultierenden variablen Elemente kann auf der Seite mit den Optionseinstellungen angepasst werden.
+"""
+fr = "Ce plugin regroupe toutes les balises d'interprète dans une variable à valeurs multiples `%_performers%`. Le format des éléments de la variable obtenue peut être personnalisé dans la page des paramètres."
+zh_CN = "此插件将所有表演者标签合并到一个多值变量 `%_performers%` 中。 结果变量的项格式可以在选项设置页面中自定义。"
 
 [[plugins]]
 id = "create-plugin"
@@ -220,12 +279,30 @@ categories = [
 ]
 trust_level = "trusted"
 authors = [
-  "Bob Swift",
-  "Philipp Wolfer",
+  "Bob Swift, Philipp Wolfer",
 ]
 added_at = "2025-12-17T22:36:05Z"
-updated_at = "2025-12-17T22:40:09Z"
+updated_at = "2026-10-11T18:45:44Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/format_performer_tags/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin provides options with respect to the formatting of performer tags. The format of
+the resulting tags can be customized by the settings in the options page."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-format-performer-tags/issues"
+
+[plugins.description_i18n]
+fr = "Ce plugin offre des options relatives au formatage des balises d'interprète."
+zh_CN = "此插件提供有关表演者标签格式的选项。"
+
+[plugins.long_description_i18n]
+fr = "Ce plugin propose des options relatives au formatage des balises d'interprète. Le format des balises générées peut être personnalisé à l'aide des paramètres disponibles dans la page d'options."
+zh_CN = "此插件提供有关表演者标签格式的选项。 结果的标签格式可以通过选项页面的设置进行自定义。"
+
+[plugins.name_i18n]
+fr = "Format des balises Performer"
+zh_CN = "格式化表演者标签"
 
 [[plugins]]
 id = "generate-playlist"
@@ -281,8 +358,30 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-18T05:28:10Z"
-updated_at = "2025-12-18T05:39:02Z"
+updated_at = "2026-10-11T18:45:44Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/genre_mapper/user_guide.html"
+license = "GPL-2.0"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.txt"
+long_description = """
+This plugin provides the ability to standardize genres in the \"genre\"
+tag by matching the genres as found to a standard genre as defined in
+the genre replacement mapping configuration option. Once installed a
+settings page will be added to Picard's options, which is where the
+plugin is configured."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-genre-mapper/issues"
+
+[plugins.description_i18n]
+fr = "Ce plugin permet d'uniformiser les genres dans la balise « genre » en faisant correspondre les genres détectés à un genre standard défini dans l'option de configuration du mappage de remplacement des genres."
+zh_CN = "该插件提供的能力是在 \"genre\" 标签中标准化流派，通过将找到的流派与流派替换映射配置选项中定义的标准流派进行匹配。"
+
+[plugins.long_description_i18n]
+fr = "Ce plugin permet d'uniformiser les genres dans la balise « genre » en faisant correspondre les genres détectés à un genre standard défini dans l'option de configuration « genre replacement mapping ». Une fois installé, une page de paramètres sera ajoutée aux options de Picard, où le plugin sera configuré."
+zh_CN = "该插件提供的能力是在 \"genre\" 标签中标准化流派，通过将找到的流派与流派替换映射配置选项中定义的标准流派进行匹配。安装后，Picard 的选项中会添加一个设置页面，该页面用于配置插件。"
+
+[plugins.name_i18n]
+fr = "Classificateur de genres"
+zh_CN = "流派映射器"
 
 [[plugins]]
 id = "haikuattrs"
@@ -358,7 +457,7 @@ versioning_scheme = "semver"
 id = "keep-only-tags"
 uuid = "910bba9b-6259-43ac-9ceb-c8d2b6908c18"
 name = "Keep Only Tags"
-description = "This plugin provides a different approach for the user to determine which tags are written to the output files by Picard."
+description = "This plugin allows the user to determine which tags are written to the output files by Picard."
 git_url = "https://github.com/rdswift/picard-plugin-keep-only-tags"
 categories = [
   "metadata",
@@ -368,16 +467,67 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2026-01-03T00:35:27Z"
-updated_at = "2026-01-03T00:35:27Z"
+updated_at = "2026-10-11T18:45:46Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/keep_only_tags/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+**Use with caution, because any tags not included in the user's \"keep\" list will not be written to the output files.**
+As always, it is recommended that you first test your setup on a **copy** of a small subset of files to ensure that
+the results are as expected.
+
+This plugin provides a different approach for the user to determine which tags are written to the output files by
+Picard. If the user only wants to keep a small subset of the tags provided by MusicBrainz, they can specify only the
+tags that they want to keep rather than develop a lengthy tagger script to remove all of the tags that they don't want.
+
+Tags that you wish to keep are entered in a page in the options settings, with each tag on a separate line. Blank lines
+will be ignored. The entries are not case-sensitive.
+
+If a tag in the list ends with an asterisk (`*`), then it will keep any tags beginning with the tag. For example, if
+your list contains \"`performer:*`\" then all tags beginning with \"`performer:`\" will be kept, such as
+\"`performer:instrument`\" and \"`performer:vocals`\".
+
+All tags that are removed will still be available as variables with \"`_ko_`\" prepended to the tag name. For example,
+if you choose not to keep the \"`musicbrainz_trackid`\" tag, it will still be available to scripts as
+\"`%_ko_musicbrainz_trackid%`\"."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-keep-only-tags/issues"
+
+[plugins.description_i18n]
+fr = "Ce plugin permet à l'utilisateur de choisir les balises que Picard doit ajouter aux fichiers de sortie."
+zh_CN = "此插件允许用户确定 Picard 写入输出文件的哪些标签。"
+
+[plugins.long_description_i18n]
+fr = """
+**À utiliser avec précaution, car toutes les balises ne figurant pas dans la liste « à conserver » de l'utilisateur ne seront pas écrites dans les fichiers de sortie.** Comme toujours, il est recommandé de tester d'abord votre configuration sur une **copie** d'un petit sous-ensemble de fichiers afin de vous assurer que les résultats correspondent à vos attentes.
+
+Ce plugin offre à l'utilisateur une approche différente pour déterminer quelles balises sont écrites dans les fichiers de sortie par Picard. Si l'utilisateur souhaite ne conserver qu'un petit sous-ensemble des balises fournies par MusicBrainz, il peut spécifier uniquement les balises qu'il souhaite conserver plutôt que de développer un long script de balisage pour supprimer toutes les balises dont il ne veut pas.
+
+Les balises que vous souhaitez conserver sont saisies dans une page des paramètres d'options, chaque balise sur une ligne distincte. Les lignes vides seront ignorées. Les entrées ne sont pas sensibles à la casse.
+
+Si une balise de la liste se termine par un astérisque (`*`), toutes les balises commençant par cette balise seront conservées. Par exemple, si votre liste contient « `performer:*` », toutes les balises commençant par « `performer:` » seront conservées, telles que « `performer:instrument` » et « `performer:vocals` ».
+
+Toutes les balises supprimées resteront disponibles en tant que variables, avec « `_ko_` » ajouté au début du nom de la balise. Par exemple, si vous choisissez de ne pas conserver la balise « `musicbrainz_trackid` », celle-ci restera disponible pour les scripts sous la forme « `%_ko_musicbrainz_trackid%` »."""
+zh_CN = """
+**请谨慎使用，因为不在用户 \"keep\" 列表中的任何标签都不会写入输出文件。** 像往常一样，建议您首先在文件的小子集的 **副本** 上测试您的设置，以确保结果符合预期。
+
+此插件为用户提供了一种不同的方法来确定哪些标签将被 Picard 写入输出文件。如果用户只想保留 MusicBrainz 提供的标签的小子集，他们可以指定他们只想保留的标签，而不是编写一个冗长的 tagger 脚本来删除他们不想要的标签。
+
+您希望保留的标签输入在选项设置的页面中，每个标签占一行。空白行将被忽略。条目不区分大小写。
+
+如果列表中的标签以星号 (`*`) 结尾，则它将保留以该标签开头的任何标签。例如，如果您的列表包含 \"`performer:*`\"，则所有以 \"`performer:`\" 开头的标签都将被保留，例如 \"`performer:instrument`\" 和 \"`performer:vocals`\"。
+
+所有被删除的标签仍然可用，但标签名前会加上 \"`_ko_`\" 作为变量。例如，如果您选择不保留 \"`musicbrainz_trackid`\" 标签，它仍然可用于脚本作为 \"`%_ko_musicbrainz_trackid%`\"。"""
+
+[plugins.name_i18n]
+fr = "Conserver uniquement les balises"
+zh_CN = "仅保留标签"
 
 [[plugins]]
 id = "key-wheel-converter"
 uuid = "acc16641-5c1d-4589-9909-e411f816e3fb"
 name = "Key Wheel Converter"
-description = """
-Adds functions to convert between 'standard', 'camelot', 'open key' and 'traktor' key formats.
-"""
+description = "Adds functions to convert between 'standard', 'camelot', 'open key' and 'traktor' key formats."
 git_url = "https://github.com/rdswift/picard-plugin-key-wheel-converter"
 categories = [
   "scripting",
@@ -387,8 +537,22 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-20T03:35:29Z"
-updated_at = "2025-12-20T03:41:24Z"
+updated_at = "2026-10-11T18:45:47Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/key_wheel_converter/user_guide.html"
+license = "GPL-2.0"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.txt"
+long_description = """
+Adds functions to convert between 'standard', 'camelot', 'open key' and 'traktor' key formats.
+It adds four new scripting functions:
+
+* **$key2camelot(key)** returns the key string `key` in camelot key format.
+* **$key2openkey(key)** returns the key string `key` in open key format.
+* **$key2standard(key[,symbols])** returns the key string `key` in standard key format. If the optional argument `symbols` is set, then the '♭' and '#' symbols will be used, rather than spelling out '-Flat' and '-Sharp'.
+* **$key2traktor(key)** returns the key string `key` in traktor key format.
+
+The `key` argument can be entered in any of the supported formats, such as '2B' (camelot), '6d' (open key), 'A♭ Minor' (standard with symbols), 'A-Flat Minor' (standard with text) or 'C#' (traktor).  If the `key` argument is not recognized as one of the standard keys in the supported formats, then an empty string will be returned."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-key-wheel-converter/issues"
 
 [[plugins]]
 id = "label-variables"
@@ -404,8 +568,28 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-27T01:44:31Z"
-updated_at = "2025-12-27T01:44:31Z"
+updated_at = "2026-10-11T18:45:47Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/label_variables/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin reads the release metadata provided to Picard and exposes the information in a number of additional variables for use in Picard scripts.
+
+***NOTE:*** This plugin makes no additional calls to the MusicBrainz website api for the information.
+
+### Label Variables
+
+* **_label_ids_multi** - All label IDs listed, as a multi-value
+* **_label_names_multi** - All label names listed, as a multi-value
+* **_label_sort_names_multi** - All label names listed (sort name), as a multi-value
+* **_label_disambig_multi** - All label disambiguations listed, as a multi-value
+* **_label_catalog_multi** - All label catalog numbers listed, as a multi-value
+* **_label_label_count** - Count of the number of labels listed
+* **_label_catalog_count** - Count of all catalog numbers listed
+
+***NOTE:*** Variables will not be created if the data is missing."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-label-variables/issues"
 
 [[plugins]]
 id = "language-name"
@@ -422,8 +606,54 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-31T21:51:46Z"
-updated_at = "2025-12-31T21:51:46Z"
+updated_at = "2026-10-11T18:45:47Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/language_name/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+The function is used as `$language_name(code)`, where `code` is the three-character language code.
+It would typically be used to expand the `%language%` and `%_releaselanguage%` tags.
+
+For example, `$language_name(%language%)` will return '**English**' if the language code is '**eng**',
+or '**Gwich´in**' if the language code is '**gwi**', or even '**Klingon / tlhIngan-Hol**' if the code
+is '**tlh**'. (Yes, Klingon is actually officially recognized in the ISO 639-3 list of languages.)
+
+If an unknown code is entered, the function will return '**unknown**'. If there is no code entered,
+'**missing**' will be returned."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-language-name/issues"
+
+[plugins.description_i18n]
+nl = "Deze plug-in biedt een nieuwe scriptfunctie, `$language_name()` waarmee je een taalcode van drie tekens kunt vervangen door de volledige naam van de taal."
+de = "Das Plugin stelle eine neue Skript-Funktion `$language_name()` bereit, um den dreistelligen Sprachcode durch den vollständigen Namen der Sprache zu ersetzen."
+fr = "Ce plugin fournit une nouvelle fonction de script `$language_name()` qui permet de remplacer le code de langue à trois caractères par le nom complet de la langue."
+zh_CN = "此插件提供了一个新的脚本函数 `$language_name()`，用于将三字符语言代码替换为语言的全名。"
+
+[plugins.long_description_i18n]
+nl = """
+De functie wordt gebruikt in de vorm `$language_name(code)`, waarin `code` de taalcode met drie tekens is. De functie is vooral handig om de tags `%language%` en `%_releaselanguage%` uit te breiden.
+
+Als de taal van de gebruikersinterface is ingesteld op Nederlands, retourneert de functie `$language_name(%language%)` bijvoorbeeld ‘Engels’, als de taalcode ‘**eng**’ is, of ‘**Gwich´in**’ als de taalcode ‘**gwi**’ is en zelfs ‘**Klingon / tlhIngan-Hol**’ als de code ‘**tlh**’ is. (Ja, Klingon staat officieel in de ISO 639-3-lijst met talen.)
+
+Als er een onbekende code wordt ingevoerd, retourneer de functie ‘**unknown**’. Als er geen code wordt ingevoerd, retourneert de functie ‘**missing**’."""
+fr = """
+Cette fonction s'utilise sous la forme `$language_name(code)`, où `code` correspond au code de langue à trois caractères. Elle sert généralement à développer les balises `%language%` et `%_releaselanguage%`.
+
+Par exemple, `$language_name(%language%)` renverra « **English** » si le code de langue est « **eng** », ou « **Gwich´in** » si le code de langue est « **gwi** », ou encore « **Klingon / tlhIngan-Hol** » si le code est « **tlh** ». (Oui, le klingon est effectivement reconnu officiellement dans la liste des langues ISO 639-3.)
+
+Si un code inconnu est saisi, la fonction renverra « **unknown** ». Si aucun code n'est saisi, « **missing** » sera renvoyé."""
+zh_CN = """
+该函数用作 `$language_name(code)`，其中 `code` 是三字符语言代码。它通常用于扩展 `%language%` 和 `%_releaselanguage%` 标签。
+
+例如，如果语言代码是 '**eng**'，`$language_name(%language%)` 将返回 '**English**'；如果语言代码是 '**gwi**'，将返回 '**Gwich´in**'；甚至如果代码是 '**tlh**'，将返回 '**Klingon / tlhIngan-Hol**'。（是的，克lingon 实际上在 ISO 639-3 语言列表中是官方承认的。）
+
+如果输入了未知代码，函数将返回 '**unknown**'。如果没有输入代码，将返回 '**missing**'。"""
+
+[plugins.name_i18n]
+nl = "Naam van de taal"
+de = "Name der Sprache"
+fr = "Nom de la langue"
+zh_CN = "语言名称"
 
 [[plugins]]
 id = "loadasnat"
@@ -537,7 +767,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2026-04-22T08:09:52Z"
-updated_at = "2026-04-27T18:12:44Z"
+updated_at = "2026-10-11T18:45:51Z"
 license = "MIT"
 license_url = "https://opensource.org/licenses/MIT"
 long_description = """
@@ -550,7 +780,28 @@ or \"Convert to Simplified Chinese\" action.
 For scripting you can use the following tagger functions:
 
 - `$convert_to_simplified_chinese(text)`
-- `$convert_to_traditional_chinese(text)`"""
+- `$convert_to_traditional_chinese(text)`
+
+## Example
+
+```taggerscript
+$convert_to_simplified_chinese(邊關)
+```
+
+Output: 边关
+
+```taggerscript
+$convert_to_traditional_chinese(边关)
+```
+
+Output: 邊關
+
+## Requirements
+
+This plugin requires the [OpenCC](https://github.com/BYVoid/OpenCC) library and Python
+package. Official Picard release packages usually include OpenCC. If you have installed
+Picard on Linux using your distribution's package manager you might need to explicitly
+install the required package (i.e. python3-opencc or similar)."""
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-opencc"
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
@@ -559,9 +810,7 @@ report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 id = "performer-tag-replace"
 uuid = "e561da4b-5b0c-4bc0-a8f6-d5384e445669"
 name = "Performer Tag Replace"
-description = """
-This plugin provides the ability to replace text in performer tags.
-"""
+description = "This plugin provides the ability to replace text in performer tags."
 git_url = "https://github.com/rdswift/picard-plugin-performer-tag-replace"
 categories = [
   "metadata",
@@ -571,8 +820,27 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-20T19:18:28Z"
-updated_at = "2025-12-20T19:19:06Z"
+updated_at = "2026-10-11T18:45:51Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/performer_tag_replace/user_guide.html"
+license = "GPL-2.0 or later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin provides the ability to replace text in performer tags. The original/replacement pairs used can be customized
+in the option settings page."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-performer-tag-replace/issues"
+
+[plugins.description_i18n]
+fr = "Ce plugin permet de remplacer du texte dans les balises d'interprète."
+zh_CN = "此插件提供替换表演者标签中文字的能力。"
+
+[plugins.long_description_i18n]
+fr = "Ce plugin permet de remplacer du texte dans les balises d'interprète. Les paires « texte d'origine/texte de remplacement » utilisées peuvent être personnalisées dans la page des paramètres."
+zh_CN = "此插件提供替换表演者标签中文字的能力。原始/替换对可以在选项设置页面中自定义。"
+
+[plugins.name_i18n]
+fr = "Remplacer la balise « Performer »"
+zh_CN = "表演者标签替换"
 
 [[plugins]]
 id = "persistent-variables"
@@ -590,16 +858,57 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-04T04:10:55Z"
-updated_at = "2025-12-04T04:10:55Z"
+updated_at = "2026-10-11T18:45:52Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/persistent_variables/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin provides the ability to store and retrieve script variables that persist across tracks and albums.
+This allows things like finding and storing the earliest recording date of all of the tracks on an album.
+
+There are two types of persistent variables maintained - album variables and session variables. Album variables
+persist across all tracks on an album. Each album's information is stored separately, and is reset when the
+album is refreshed. The information is cleared when an album is removed. Session variables persist across all
+albums and tracks, and are cleared when Picard is shut down or restarted.
+
+This plugin adds eight new scripting functions to allow management of persistent script variables."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-persistent-variables/issues"
 
 [plugins.name_i18n]
 de = "Persistente Variablen"
 fr = "Variables persistantes"
+zh_CN = "持久变量"
 
 [plugins.description_i18n]
 de = "Dieses Plugin bietet die Möglichkeit, Skriptvariablen zu speichern und abzurufen, die über Titel und Alben hinweg bestehen bleiben."
-fr = "Ce plugin permet de stocker et de récupérer des variables de script qui persistent d'une piste à l'autre et d'un album à l'autre."
+fr = "Ce plugin permet de stocker et de récupérer des variables de script qui sont conservées d'une piste à l'autre et d'un album à l'autre."
+zh_CN = "此插件提供存储和检索脚本变量的能力，这些变量可以在音轨和专辑之间持久化。"
+
+[plugins.long_description_i18n]
+de = """
+Dieses Plugin bietet die Möglichkeit, Skriptvariablen zu speichern und abzurufen, die über Titel und Alben hinweg bestehen bleiben.
+So können beispielsweise das früheste Aufnahmedatum aller Titel eines Albums ermittelt und gespeichert werden.
+
+Es gibt zwei Arten von persistenten Variablen: Albumvariablen und Sitzungsvariablen. Albumvariablen bleiben über alle Titel eines Albums
+hinweg bestehen. Die Informationen zu jedem Album werden separat gespeichert und bei einer Aktualisierung des Albums zurückgesetzt. Die
+Informationen werden gelöscht, wenn ein Album entfernt wird. Sitzungsvariablen bleiben über alle Alben und Titel hinweg bestehen und werden
+gelöscht, wenn Picard beendet oder neu gestartet wird.
+
+Dieses Plugin fügt acht neue Skriptfunktionen hinzu, die die Verwaltung persistenter Skriptvariablen ermöglichen.
+"""
+fr = """
+Ce plugin permet de stocker et de récupérer des variables de script qui persistent d'une piste à l'autre et d'un album à l'autre. Cela permet, par exemple, de rechercher et d'enregistrer la date d'enregistrement la plus ancienne de toutes les pistes d'un album.
+
+Deux types de variables persistantes sont gérés : les variables d'album et les variables de session. Les variables d'album persistent sur toutes les pistes d'un album. Les informations de chaque album sont stockées séparément et sont réinitialisées lorsque l'album est actualisé. Les informations sont effacées lorsqu'un album est supprimé. Les variables de session persistent sur tous les albums et toutes les pistes, et sont effacées lorsque Picard est arrêté ou redémarré.
+
+Ce plugin ajoute huit nouvelles fonctions de script pour permettre la gestion des variables de script persistantes."""
+zh_CN = """
+此插件提供存储和检索脚本变量的能力，这些变量可以在音轨和专辑之间持久化。这允许类似查找并存储专辑上所有音轨的最早录音日期这样的操作。
+
+维护有两种类型的持久变量 - 专辑变量和会话变量。专辑变量在专辑上的所有音轨之间持久化。每个专辑的信息是分开存储的，当专辑刷新时会重置。当专辑被移除时信息会被清除。会话变量在所有专辑和音轨之间持久化，并在 Picard 关闭或重新启动时被清除。
+
+此插件添加了八个新的脚本函数来管理持久化的脚本变量。"""
 
 [[plugins]]
 id = "remove-matched-albums"
@@ -655,7 +964,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-20T15:25:15Z"
-updated_at = "2026-04-28T00:19:53Z"
+updated_at = "2026-10-11T18:45:53Z"
 maintainers = [
   "MusicBrainz Picard Team",
 ]
@@ -693,6 +1002,41 @@ The following file formats are supported:
 This plugin is based on the original ReplayGain plugin by Philipp Wolfer and Sophist."""
 report_bugs_to = "https://tickets.metabrainz.org/issues/?filter=13410"
 
+[plugins.description_i18n]
+de = "Berechnet ReplayGain-Informationen für Titel und Alben"
+nl = "Berekent ReplayGain-informatie over nummers en uitgaven"
+
+[plugins.long_description_i18n]
+de = """
+Berechnet ReplayGain-Informationen für Titel und Alben gemäß der
+[ReplayGain-2.0-Spezifikation](https://wiki.hydrogenaud.io/index.php?title=ReplayGain_2.0_specification).
+Dieses Plugin hängt vom ReplayGain-Tool [rsgain](https://github.com/complexlogic/rsgain) ab. Benutzer
+müssen rsgain installieren und den Pfad dazu in den Plugin-Einstellungen festlegen, bevor sie es verwenden können.
+
+#### Verwendung
+Wählen Sie einen oder mehrere Titel, Alben oder Cluster aus, klicken Sie dann mit der rechten Maustaste und wählen Sie Plugin -> ReplayGain berechnen.
+Das Plugin berechnet die ReplayGain-Informationen für die ausgewählten Elemente und zeigt die Ergebnisse
+im Metadatenfenster an. Klicken Sie auf „Speichern“, um die Tags in die Datei zu schreiben.
+
+Die folgenden Dateiformate werden unterstützt:
+
+- MP3 (.mp3)
+- FLAC (.flac)
+- Ogg (.ogg, .oga, .spx)
+- Opus (.opus)
+- MPEG-4 Audio (.m4a, .mp4)
+- WavPack (.wv)
+- Monkey’s Audio (.ape)
+- WMA (.wma)
+- MP2 (.mp2)
+- WAV (.wav)
+- AIFF (.aiff)
+- TAK (.tak)
+- Musepack *(nur Stream-Version 8)* (.mpc)
+
+Dieses Plugin basiert auf dem ursprünglichen ReplayGain-Plugin von Philipp Wolfer und Sophist.
+"""
+
 [[plugins]]
 id = "script-logger"
 uuid = "c32678a7-094b-4f9b-86f8-ff3a786cc9e4"
@@ -708,8 +1052,67 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-20T21:21:58Z"
-updated_at = "2025-12-20T21:22:24Z"
+updated_at = "2026-10-11T18:45:53Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/script_logger/user_guide.html"
+license = "GPL-2.0"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.txt"
+long_description = """
+This plugin provides a new script function `$logline()` to write entries
+to Picard's system log. By default, the log level is set at `Info`, but
+any level can be used by providing the level as an optional second
+parameter to the function.
+
+The function is used as:
+
+`$logline(text[,level])`
+
+where `text` is the text to write to the log. The entry will be written
+at log level `Info` by default, but this can be changed by specifying a
+different level as an optional second parameter. Allowable log levels are:
+
+- E (Error)
+- W (Warning)
+- I (Info)
+- D (Debug)
+
+If an unknown level is entered, the function will use the default `Info`
+level."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-script-logger/issues"
+
+[plugins.description_i18n]
+fr = "Ce plugin fournit une nouvelle fonction de script, `$logline()`, permettant d'enregistrer des entrées dans le journal système de Picard."
+zh_CN = "此插件提供了一个新的脚本函数 `$logline()` 来写入条目到 Picard 的系统日志。"
+
+[plugins.long_description_i18n]
+fr = """
+Ce plugin fournit une nouvelle fonction de script `$logline()` permettant d'écrire des entrées dans le journal système de Picard. Par défaut, le niveau de journalisation est défini sur `Info`, mais il est possible d'utiliser n'importe quel niveau en le spécifiant comme deuxième paramètre facultatif de la fonction.
+
+La fonction s'utilise comme suit :
+
+`$logline(texte[,niveau])`
+
+où `texte` correspond au texte à écrire dans le journal. L'entrée sera écrite au niveau de journalisation `Info` par défaut, mais cela peut être modifié en spécifiant un niveau différent en tant que deuxième paramètre facultatif. Les niveaux de journalisation autorisés sont :
+
+- E (Erreur) - W (Avertissement) - I (Info) - D (Débogage)
+
+Si un niveau inconnu est saisi, la fonction utilisera le niveau par défaut `Info`."""
+zh_CN = """
+此插件提供了一个新的脚本函数 `$logline()` 来写入条目到 Picard 的系统日志。默认情况下，日志级别设置为 `Info`，但可以通过向函数提供级别作为可选的第二参数来使用任何级别。
+
+该函数的使用方式为：
+
+`$logline(text[,level])`
+
+其中 `text` 是要写入日志的文本。条目默认以 `Info` 级别写入日志，但可以通过指定不同的级别作为可选的第二参数来更改。允许的日志级别是：
+
+- E (错误) - W (警告) - I (信息) - D (调试)
+
+如果输入了未知级别，函数将使用默认的 `Info` 级别。"""
+
+[plugins.name_i18n]
+fr = "Enregistreur de scripts"
+zh_CN = "脚本记录器"
 
 [[plugins]]
 id = "search-engine-lookup"
@@ -725,8 +1128,36 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-23T00:22:33Z"
-updated_at = "2025-12-23T00:22:33Z"
+updated_at = "2026-10-11T18:45:53Z"
 versioning_scheme = "semver"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/search_engine_lookup/user_guide.html"
+license = "GPL-2.0"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.txt"
+long_description = """
+This plugin adds a right-click option on a cluster, providing the ability to lookup the cluster using a search engine in a
+browser window. It also provides a right-click option on album and track items in the right-hand Album pane, allowing a
+search engine lookup for the cover art associated with the selected album or track.
+
+When you right-click on the cluster, album or track, the lookup option is found under the \"Plugins\" section of the context list."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-search-engine-lookup/issues"
+
+[plugins.description_i18n]
+fr = "Ajoute une option accessible par un clic droit sur un groupe permettant de rechercher des informations sur un album à l'aide d'un moteur de recherche dans une fenêtre de navigateur."
+zh_CN = "在聚类上添加右键选项，使用浏览器窗口中的搜索引擎查找专辑信息。"
+
+[plugins.long_description_i18n]
+fr = """
+Ce plugin ajoute une option accessible par un clic droit sur un groupe, permettant de rechercher ce groupe à l'aide d'un moteur de recherche dans une fenêtre de navigateur. Il propose également une option accessible par un clic droit sur les albums et les morceaux dans le volet « Album » situé à droite, permettant de rechercher sur un moteur de recherche la pochette associée à l'album ou au morceau sélectionné.
+
+Lorsque vous cliquez avec le bouton droit sur le groupe, l'album ou le morceau, l'option de recherche se trouve dans la section « Plugins » de la liste contextuelle."""
+zh_CN = """
+此插件在聚类上添加右键选项，提供使用浏览器窗口中的搜索引擎查找聚类的功能。它 还为右侧专辑窗格中的专辑和音轨项提供右键选项，允许查找与选定专辑或音轨相关的封面图。
+
+当你右键点击聚类、专辑或音轨时，查找选项在上下文列表的 \"插件\" 部分找到。"""
+
+[plugins.name_i18n]
+fr = "Recherche sur les moteurs de recherche"
+zh_CN = "搜索引擎查询"
 
 [[plugins]]
 id = "submit-isrc"
@@ -743,7 +1174,7 @@ authors = [
   "Bob Swift",
 ]
 added_at = "2025-12-22T21:11:44Z"
-updated_at = "2026-04-27T14:55:27Z"
+updated_at = "2026-10-11T18:45:54Z"
 versioning_scheme = "semver"
 homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/submit_isrc/user_guide.html"
 license = "GPL-2.0"
@@ -762,6 +1193,7 @@ report_bugs_to = "https://github.com/rdswift/picard-plugin-submit-isrc/issues"
 
 [plugins.description_i18n]
 fr = "Ajoute une option accessible par un clic droit sur un album permettant d'envoyer les codes ISRC au serveur MusicBrainz indiqué dans les options."
+zh_CN = "在专辑上添加右键选项，将 ISRCs 提交给 选项 中指定的 MusicBrainz 服务器。"
 
 [plugins.long_description_i18n]
 fr = """
@@ -774,9 +1206,20 @@ Si les métadonnées d'un fichier contiennent plusieurs ISRC, par exemple si le 
 Si l'un des fichiers contient un ISRC invalide, ou si le même ISRC apparaît dans les métadonnées de deux fichiers ou plus, un message d'avertissement s'affichera et le processus de soumission sera interrompu.
 
 Une fois les ISRC soumis, un message s'affichera pour indiquer si la soumission a abouti ou non."""
+zh_CN = """
+在专辑上添加右键选项，将 ISRCs 提交给 选项 中指定的 MusicBrainz 服务器。
+
+要使用此功能，您必须首先将您的文件匹配到发行品的适当音轨。完成后，如果您将 Picard 设置为覆盖文件中的 'isrc' 标签，但在保存文件之前，右键单击发行品并在 \"插件\" 部分中选择 \"提交 ISRCs\"。对于元数据中具有单个有效 ISRC 的每个文件，如果它不存在于发行品上的录音中，则 ISRC 将被添加到该录音中。一旦所有发行品的音轨都处理完毕，缺失的 ISRCs 将被提交到 MusicBrainz。
+
+如果文件的元数据包含多个 ISRCs，例如如果文件已经被标记，则不会为该文件提交 ISRCs。
+
+如果其中一个文件包含无效的 ISRC，或者如果相同的 ISRC 出现在两个或多个文件的元数据中，则将显示通知并中止提交过程。
+
+当 ISRCs 被提交后，将显示通知，显示提交是否成功。"""
 
 [plugins.name_i18n]
 fr = "Soumettre un code ISRC"
+zh_CN = "提交 ISRC"
 
 [[plugins]]
 id = "theaudiodb"
@@ -823,7 +1266,7 @@ authors = [
   "Sophist",
 ]
 added_at = "2025-12-03T23:44:25Z"
-updated_at = "2026-04-28T00:19:39Z"
+updated_at = "2026-10-11T18:45:55Z"
 maintainers = [
   "MusicBrainz Picard Team",
 ]
@@ -842,27 +1285,28 @@ pane of the main Picard window, which can be useful when you are writing tagging
 report_bugs_to = "https://tickets.metabrainz.org/issues/?filter=13410"
 
 [plugins.name_i18n]
-de = "Script-Variablen anzeigen"
+de = "Skriptvariablen anzeigen"
 fr = "Afficher les variables du script"
+zh_CN = "查看脚本变量"
 
 [plugins.description_i18n]
-de = "Zeigen Sie ein Dialogfeld an, in dem die Metadaten-Tags und Variablen für den Titel/die Datei aufgelistet sind."
-fr = "Affichez une boîte de dialogue répertoriant les balises de métadonnées et les variables pour la piste/le fichier."
+de = "Zeigt ein Dialogfenster mit den Metadaten-Tags und Variablen für den Titel/die Datei an."
+fr = "Afficher une boîte de dialogue répertoriant les balises de métadonnées et les variables associées à la piste / au fichier."
+zh_CN = "显示一个对话框，列出音轨 / 文件的元数据标签和变量。"
 
 [plugins.long_description_i18n]
 de = """
-Zeigt ein Dialogfeld mit den Metadaten-Tags und Variablen für den Titel/die Datei an.
+Zeigt ein Dialogfenster mit den Metadaten-Tags und Variablen für den Titel/die Datei an.
 
-Dadurch können Sie Metadatenvariablen sehen, die mit „~“ beginnen und normalerweise im Metadatenbereich des
-Picard-Hauptfensters nicht sichtbar sind. Dies kann beim Schreiben von Skripten zum Taggen oder Benennen von Dateien nützlich sein.
-"""
+Dadurch können Metadatenvariablen eingesehen werden, die mit „~“ beginnen und normalerweise im Metadatenbereich des Picard-Hauptfensters nicht sichtbar sind. Dies kann beim Schreiben von Skripten zum Taggen oder Benennen von Dateien nützlich sein."""
 fr = """
-Affichez une boîte de dialogue répertoriant les balises et variables de métadonnées pour la piste/le fichier.
+Affiche une boîte de dialogue répertoriant les balises de métadonnées et les variables associées à la piste ou au fichier.
 
-Cela vous permet de voir les variables de métadonnées commençant par « ~ » qui ne sont normalement pas visibles dans le volet
-des métadonnées de la fenêtre principale de Picard, ce qui peut être utile lorsque vous écrivez des scripts de balisage ou de
-nommage de fichiers.
-"""
+Cela vous permet de visualiser les variables de métadonnées commençant par « ~ », qui ne sont normalement pas visibles dans le volet des métadonnées de la fenêtre principale de Picard, ce qui peut s'avérer utile lorsque vous écrivez des scripts de balisage ou de nommage de fichiers."""
+zh_CN = """
+显示一个对话框，列出音轨 / 文件的元数据标签和变量。
+
+这允许您查看以 \"~\" 开头的元数据变量，这些变量通常在主 Picard 窗口的元数据窗格中不可见，这在您编写标记或文件命名脚本时可能很有用。"""
 
 [[plugins]]
 id = "workandmovement"
@@ -931,7 +1375,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-05T20:01:04Z"
-updated_at = "2026-04-27T18:01:18Z"
+updated_at = "2026-10-11T18:45:57Z"
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-xqaf"
 license = "GPL-3.0-or-later"
@@ -944,7 +1388,15 @@ loaded and renamed.
 
 For more details about both formats see
 [Introducing the Extended QOA Format for Audio](https://remilia.sdf.org/blog/2025-06-14-a.html)
-and [The Quite OK Audio Format](https://qoaformat.org/)."""
+and [The Quite OK Audio Format](https://qoaformat.org/).
+
+**Note**: Support for compressed tags requires the
+[zstandard](https://pypi.org/project/zstandard/) Python package. Without this package
+XQAF files with compressed tags cannot be read and the compression option is disabled.
+
+Official Picard release packages usually include zstandard. If you have installed
+Picard on Linux using your distribution's package manager you might need to explicitly
+install the required package (i.e. python3-zstandard or similar)."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [plugins.description_i18n]
@@ -959,4 +1411,14 @@ können aber geladen und umbenannt werden.
 
 Weitere Details zu beiden Formaten finden sich unter
 [Introducing the Extended QOA Format for Audio](https://remilia.sdf.org/blog/2025-06-14-a.html)
-und [The Quite OK Audio Format](https://qoaformat.org/)."""
+und [The Quite OK Audio Format](https://qoaformat.org/).
+
+**Hinweis**: Unterstüzung für komprimierte Tags benötigt das
+[zstandard](https://pypi.org/project/zstandard/) Python-Paket. Ohne dieses Paket können
+XQAF-Dateien mit komprimierten Tags nicht gelesen werden und die Kompressions-Option
+ist deaktiviert.
+
+Die offiziellen Picard-Veröffentlichungen beinhalten normalerweise das zstandard-Paket.
+Falls Picard auf Linux aus den Paketquellen der Linux-Distribution installiert wurde,
+kann es erforderlich sein, das benötigte Paket (z.B. python3-zstandard) separat zu
+installieren."""
