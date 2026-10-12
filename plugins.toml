@@ -216,7 +216,7 @@ authors = [
   "Sambhav Kothari",
 ]
 added_at = "2025-12-16T15:21:14Z"
-updated_at = "2026-04-27T18:04:54Z"
+updated_at = "2026-10-12T15:54:47Z"
 versioning_scheme = "semver"
 maintainers = [
   "Philipp Wolfer",
@@ -229,6 +229,26 @@ Use cover art from fanart.tv.
 
 To use this plugin you have to register a personal API key on [fanart.tv](https://fanart.tv/get-an-api-key/)."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+
+[plugins.description_i18n]
+de = "Cover-Bilder von fanart.tv verwenden"
+zh_CN = "使用 fanart.tv 的封面图片"
+
+[plugins.long_description_i18n]
+de = """
+Cover-Bilder von fanart.tv verwenden.
+
+Um dieses Plugin zu verwenden, musst du einen persönlichen API-Schlüssel auf [https://fanart.tv/get-an-api-key/](https://fanart.tv/get-an-api-key/) registrieren.
+"""
+zh_CN = """
+使用 fanart.tv 的封面图片。
+
+要使用此插件，您必须在 [fanart.tv](https://fanart.tv/get-an-api-key/) 上注册个人 API 密钥
+"""
+
+[plugins.name_i18n]
+de = "fanart.tv Cover-Bilder"
+zh_CN = "fanart.tv 封面图片"
 
 [[plugins]]
 id = "file-writer"
@@ -767,7 +787,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2026-04-22T08:09:52Z"
-updated_at = "2026-10-11T18:45:51Z"
+updated_at = "2026-10-12T15:54:52Z"
 license = "MIT"
 license_url = "https://opensource.org/licenses/MIT"
 long_description = """
@@ -805,6 +825,73 @@ install the required package (i.e. python3-opencc or similar)."""
 versioning_scheme = "semver"
 homepage = "https://git.sr.ht/~phw/picard-plugin-opencc"
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
+
+[plugins.description_i18n]
+de = "Konvertiert Titellisten zwischen vereinfachten und traditionellen chinesischen Schriftzeichen."
+zh_CN = "在繁体中文和简体中文脚本之间转换音轨列表。"
+
+[plugins.long_description_i18n]
+de = """
+Konvertiert Titellisten zwischen vereinfachten und traditionellen chinesischen Schriftzeichen.
+
+Die Konvertierung kann manuell oder mithilfe von Skripten erfolgen. Für die manuelle Verwendung mit der rechten Maustaste auf Alben, Tracks, Cluster oder Dateien klicken und die Aktion „In vereinfachtes Chinesisch umwandeln“ oder „In traditionelles Chinesisch umwandeln“ wählen.
+
+Für Skripte können die folgenden Tagger-Funktionen verwendet werden:
+
+- `$convert_to_simplified_chinese(text)`
+- `$convert_to_traditional_chinese(text)`
+
+## Beispiel
+
+```taggerscript
+$convert_to_simplified_chinese(邊關)
+```
+
+Ausgabe: 边关
+
+```taggerscript
+$convert_to_traditional_chinese(边关)
+```
+
+Ausgabe: 邊關
+
+## Voraussetzungen
+
+Dieses Plugin benötigt die Bibliothek [OpenCC](https://github.com/BYVoid/OpenCC) und das zugehörige Python-Paket. Die offiziellen Picard-Release-Pakete enthalten OpenCC normalerweise bereits. Wenn Picard unter Linux über die Paketverwaltung der Distribution installiert wurde, muss möglicherweise das benötigte Paket explizit installiert (z. B. `python3-opencc` oder ein vergleichbares Paket) werden.
+"""
+zh_CN = """
+在繁体中文和简体中文脚本之间转换音轨列表。
+
+转换可以手动完成或通过脚本完成。手动使用时，右键单击专辑、音轨、聚类或文件，并选择“转换为简体中文”或“转换为简体中文”操作。
+
+对于脚本，您可以使用以下标签器函数：
+
+- `$convert_to_simplified_chinese(text)`
+- `$convert_to_traditional_chinese(text)`
+
+## 示例
+
+```taggerscript
+$convert_to_simplified_chinese(邊關)
+```
+
+输出: 边关
+
+```taggerscript
+$convert_to_traditional_chinese(边关)
+```
+
+输出: 邊關
+
+## 要求
+
+此插件需要 [OpenCC](https://github.com/BYVoid/OpenCC) 库和 Python 包。官方 Picard 发布包通常包含 OpenCC。如果您使用 Linux 发行版的包管理器安装了 Picard，您可能需要显式安装所需的包（即 python3-opencc 或类似）。
+"""
+
+[plugins.name_i18n]
+ca = "Conversió del sistema d'escriptura del xinès"
+de = "Chinesische Schriftzeichen konvertieren"
+zh_CN = "中文脚本转换"
 
 [[plugins]]
 id = "performer-tag-replace"
@@ -964,7 +1051,7 @@ authors = [
   "Philipp Wolfer",
 ]
 added_at = "2025-12-20T15:25:15Z"
-updated_at = "2026-10-11T18:45:53Z"
+updated_at = "2026-10-12T15:54:53Z"
 maintainers = [
   "MusicBrainz Picard Team",
 ]
@@ -1003,8 +1090,10 @@ This plugin is based on the original ReplayGain plugin by Philipp Wolfer and Sop
 report_bugs_to = "https://tickets.metabrainz.org/issues/?filter=13410"
 
 [plugins.description_i18n]
+ca = "Calcula la informació de ReplayGain de pistes i àlbums"
 de = "Berechnet ReplayGain-Informationen für Titel und Alben"
 nl = "Berekent ReplayGain-informatie over nummers en uitgaven"
+zh_CN = "为音轨和专辑计算 ReplayGain 信息"
 
 [plugins.long_description_i18n]
 de = """
@@ -1035,6 +1124,32 @@ Die folgenden Dateiformate werden unterstützt:
 - Musepack *(nur Stream-Version 8)* (.mpc)
 
 Dieses Plugin basiert auf dem ursprünglichen ReplayGain-Plugin von Philipp Wolfer und Sophist.
+"""
+zh_CN = """
+根据 [ReplayGain 2.0 规范](https://wiki.hydrogenaud.io/index.php?title=ReplayGain_2.0_specification). 为音轨和专辑计算 ReplayGain 信息
+此插件依赖于 ReplayGain 工具 [rsgain](https://github.com/complexlogic/rsgain). 用户必须在使用前安装 rsgain 并在插件设置中设置其路径。
+
+#### 使用方法
+选择一个或多个音轨、专辑或聚类，然后右键单击并选择 Plugin->Calculate ReplayGain.
+插件将为选定项目计算 ReplayGain 信息，并在元数据窗口中显示结果。单击保存按钮将标签写入文件。
+
+支持的文件格式：
+
+- MP3 (.mp3)
+- FLAC (.flac)
+- Ogg (.ogg, .oga, spx)
+- Opus (.opus)
+- MPEG-4 Audio (.m4a, .mp4)
+- Wavpack (.wv)
+- Monkey's Audio (.ape)
+- WMA (.wma)
+- MP2 (.mp2)
+- WAV (.wav)
+- AIFF (.aiff)
+- TAK (.tak)
+- MusePack *(仅限流媒体版本 8)* (.mpc)
+
+此插件基于 Philipp Wolfer 和 Sophist 的原始 ReplayGain 插件。
 """
 
 [[plugins]]
