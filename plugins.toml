@@ -998,6 +998,47 @@ zh_CN = """
 此插件添加了八个新的脚本函数来管理持久化的脚本变量。"""
 
 [[plugins]]
+id = "release-type-in-title"
+uuid = "d5905c27-7ec2-41c1-bd08-70c38a4fa7fc"
+name = "Release Type in Title"
+description = "This plugin automatically places selected release type information in the title of the release."
+git_url = "https://github.com/rdswift/picard-plugin-release-type-in-title"
+categories = [
+  "metadata",
+]
+trust_level = "trusted"
+authors = [
+  "Bob Swift",
+]
+added_at = "2026-10-13T22:51:48Z"
+updated_at = "2026-10-13T22:51:48Z"
+homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/release_type_in_title/user_guide.html"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+This plugin automatically places selected release type information in the title of the release. It is based on the Picard 2 plugin \"Release Type\" by Elliot Chance.
+
+The plugin checks the existing release title to determine whether the release type already appears in the title. If not, and the release type is one of those selected for inclusion, the release type is added to the release title.
+
+The release types to include, and the text to add are defined by the user in the plugin's option settings."""
+report_bugs_to = "https://github.com/rdswift/picard-plugin-release-type-in-title/issues"
+versioning_scheme = "semver"
+
+[plugins.description_i18n]
+fr = "Ce plugin insère automatiquement les informations relatives au type de publication sélectionné dans le titre de la publication."
+
+[plugins.long_description_i18n]
+fr = """
+Ce plugin insère automatiquement les informations relatives au type de publication sélectionné dans le titre de la publication. Il s'inspire du plugin Picard 2 « Release Type » d'Elliot Chance.
+
+Le plugin vérifie le titre existant de la version afin de déterminer si le type de version y figure déjà. Si ce n'est pas le cas et que le type de version fait partie de ceux sélectionnés pour être inclus, celui-ci est ajouté au titre de la version.
+
+Les types de version à inclure et le texte à ajouter sont définis par l'utilisateur dans les paramètres d'options du plugin."""
+
+[plugins.name_i18n]
+fr = "Indiquer le type de publication dans le titre"
+
+[[plugins]]
 id = "remove-matched-albums"
 uuid = "63c024d9-183b-4dbb-b31e-b6b4db7af439"
 name = "Remove Matched Albums"
