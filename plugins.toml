@@ -1032,6 +1032,34 @@ zh_CN = """
 此插件添加了八个新的脚本函数来管理持久化的脚本变量。"""
 
 [[plugins]]
+id = "pseudo-releases"
+uuid = "a08a246e-6b76-46aa-bc36-b575c0ce9edb"
+name = "Pseudo-Releases"
+description = "Supplements pseudo-releases with metadata and cover art from linked original releases."
+git_url = "https://github.com/chaban-mb/picard-plugin-pseudo-releases"
+categories = [
+  "metadata",
+  "coverart",
+]
+trust_level = "community"
+authors = [
+  "chaban",
+]
+added_at = "2026-10-13T13:20:37Z"
+updated_at = "2026-10-13T13:20:37Z"
+homepage = "https://github.com/chaban-mb/picard-plugin-pseudo-releases"
+license = "MIT"
+license_url = "https://opensource.org/licenses/MIT"
+report_bugs_to = "https://github.com/chaban/picard-plugin-pseudo-releases/issues"
+versioning_scheme = "semver"
+
+[plugins.description_i18n]
+de = "Ergänzt Pseudo-Releases mit Metadaten und Cover-Art der verknüpften Originalveröffentlichung."
+
+[plugins.name_i18n]
+de = "Pseudo-Releases"
+
+[[plugins]]
 id = "remove-matched-albums"
 uuid = "63c024d9-183b-4dbb-b31e-b6b4db7af439"
 name = "Remove Matched Albums"
