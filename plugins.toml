@@ -202,6 +202,30 @@ to 0, e.g. `$decade(1994,0)` will return \"1990s\"."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [[plugins]]
+id = "ecd2itat"
+uuid = "fdd0ec65-8c3e-4f40-bc0f-9bc88cc397e2"
+name = "ecd2iTat"
+description = "Convert disambiguations containing \"explicit\"/\"clean\" (and others) keywords to proper tags so clients can display the 🅴/🅲 symbol"
+git_url = "https://github.com/cy1der/picard-plugin-ecd2iTat"
+categories = [
+  "metadata",
+]
+trust_level = "community"
+authors = [
+  "cy1der",
+]
+added_at = "2026-10-13T00:59:27Z"
+updated_at = "2026-10-13T00:59:27Z"
+homepage = "https://github.com/cy1der/ecd2iTat"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+report_bugs_to = "https://github.com/cy1der/ecd2iTat/issues"
+refs = [
+  { name = "apiv3" },
+]
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "fanarttv"
 uuid = "d80f6f27-b141-438a-b644-fffb752e0ba2"
 name = "fanart.tv cover art"
