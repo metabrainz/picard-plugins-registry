@@ -1235,68 +1235,6 @@ fr = "Recherche sur les moteurs de recherche"
 zh_CN = "搜索引擎查询"
 
 [[plugins]]
-id = "submit-isrc"
-uuid = "bbaa987c-8ebf-412f-af6f-70c79e63bb51"
-name = "Submit ISRC"
-description = "Adds a right click option on an album to submit the ISRCs to the MusicBrainz server specified in the Options."
-git_url = "https://github.com/rdswift/picard-plugin-submit-isrc"
-categories = [
-  "metadata",
-  "other",
-]
-trust_level = "trusted"
-authors = [
-  "Bob Swift",
-]
-added_at = "2025-12-22T21:11:44Z"
-updated_at = "2026-10-11T18:45:54Z"
-versioning_scheme = "semver"
-homepage = "https://picard-plugins-user-guides.readthedocs.io/en/latest/submit_isrc/user_guide.html"
-license = "GPL-2.0"
-license_url = "https://www.gnu.org/licenses/gpl-2.0.txt"
-long_description = """
-Adds a right click option on an album to submit the ISRCs to the MusicBrainz server specified in the Options.
-
-To use this function, you must first match your files to the appropriate tracks for a release. Once this is done, but before you save your files if you have Picard set to overwrite the 'isrc' tag in your files, right-click the release and select \"Submit ISRCs\" in the \"Plugins\" section. For each file that has a single valid ISRC in its metadata, the ISRC will be added to the recording on the release if it does not already exist. Once all tracks for the release have been processed, the missing ISRCs will be submitted to MusicBrainz.
-
-If a file's metadata contains multiple ISRCs, such as if the file has already been tagged, then no ISRCs will be submitted for that file.
-
-If one of the files contains an invalid ISRC, or if the same ISRC appears in the metadata for two or more files, then a notice will be displayed and the submission process will be aborted.
-
-When ISRCs have been submitted, a notice will be displayed showing whether or not the submission was successful."""
-report_bugs_to = "https://github.com/rdswift/picard-plugin-submit-isrc/issues"
-
-[plugins.description_i18n]
-fr = "Ajoute une option accessible par un clic droit sur un album permettant d'envoyer les codes ISRC au serveur MusicBrainz indiqué dans les options."
-zh_CN = "在专辑上添加右键选项，将 ISRCs 提交给 选项 中指定的 MusicBrainz 服务器。"
-
-[plugins.long_description_i18n]
-fr = """
-Ajoute une option accessible par un clic droit sur un album permettant d'envoyer les codes ISRC au serveur MusicBrainz indiqué dans les options.
-
-Pour utiliser cette fonction, vous devez d'abord associer vos fichiers aux pistes appropriées d'une sortie. Une fois cette opération effectuée, mais avant d'enregistrer vos fichiers si vous avez configuré Picard pour qu'il écrase la balise « isrc » dans vos fichiers, cliquez avec le bouton droit sur la sortie et sélectionnez « Soumettre les ISRC » dans la section « Plugins ». Pour chaque fichier dont les métadonnées contiennent un seul ISRC valide, celui-ci sera ajouté à l'enregistrement de l'album s'il n'existe pas déjà. Une fois que toutes les pistes de l'album auront été traitées, les ISRC manquants seront soumis à MusicBrainz.
-
-Si les métadonnées d'un fichier contiennent plusieurs ISRC, par exemple si le fichier a déjà été balisé, aucun ISRC ne sera soumis pour ce fichier.
-
-Si l'un des fichiers contient un ISRC invalide, ou si le même ISRC apparaît dans les métadonnées de deux fichiers ou plus, un message d'avertissement s'affichera et le processus de soumission sera interrompu.
-
-Une fois les ISRC soumis, un message s'affichera pour indiquer si la soumission a abouti ou non."""
-zh_CN = """
-在专辑上添加右键选项，将 ISRCs 提交给 选项 中指定的 MusicBrainz 服务器。
-
-要使用此功能，您必须首先将您的文件匹配到发行品的适当音轨。完成后，如果您将 Picard 设置为覆盖文件中的 'isrc' 标签，但在保存文件之前，右键单击发行品并在 \"插件\" 部分中选择 \"提交 ISRCs\"。对于元数据中具有单个有效 ISRC 的每个文件，如果它不存在于发行品上的录音中，则 ISRC 将被添加到该录音中。一旦所有发行品的音轨都处理完毕，缺失的 ISRCs 将被提交到 MusicBrainz。
-
-如果文件的元数据包含多个 ISRCs，例如如果文件已经被标记，则不会为该文件提交 ISRCs。
-
-如果其中一个文件包含无效的 ISRC，或者如果相同的 ISRC 出现在两个或多个文件的元数据中，则将显示通知并中止提交过程。
-
-当 ISRCs 被提交后，将显示通知，显示提交是否成功。"""
-
-[plugins.name_i18n]
-fr = "Soumettre un code ISRC"
-zh_CN = "提交 ISRC"
-
-[[plugins]]
 id = "theaudiodb"
 uuid = "ed113c88-25af-4e35-b046-993226cdd46a"
 name = "TheAudioDB cover art"
