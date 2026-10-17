@@ -1350,6 +1350,35 @@ fr = "Recherche sur les moteurs de recherche"
 zh_CN = "搜索引擎查询"
 
 [[plugins]]
+id = "standardise-feat"
+uuid = "a7e09d76-52ac-41eb-8f04-5e021abd76d2"
+name = "Standardise Feat."
+description = "Standardises \"featuring\" join phrases for artists to \"feat.\""
+git_url = "https://github.com/cy1der/picard-plugin-standardise-feat"
+categories = [
+  "metadata",
+]
+trust_level = "community"
+authors = [
+  "Sambhav Kothari",
+  "cy1der",
+]
+added_at = "2026-10-17T21:29:53Z"
+updated_at = "2026-10-17T21:29:53Z"
+homepage = "https://github.com/cy1der/picard-plugin-standardise-feat"
+license = "GPL-3.0-only"
+license_url = "https://www.gnu.org/licenses/gpl-3.0.html"
+long_description = """
+Standardises \"featuring\" join phrases for artists to \"feat.\"
+
+Originally written by Sambhav Kothari for Picard 2"""
+maintainers = [
+  "cy1der",
+]
+report_bugs_to = "https://github.com/cy1der/picard-plugin-standardise-feat/issues"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "submit-isrc"
 uuid = "bbaa987c-8ebf-412f-af6f-70c79e63bb51"
 name = "Submit ISRC"
