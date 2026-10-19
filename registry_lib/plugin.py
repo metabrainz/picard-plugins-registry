@@ -103,12 +103,15 @@ def add_plugin(
     # Derive plugin ID
     plugin_id = derive_plugin_id(git_url)
 
-    # Check for duplicates in single pass
-    for existing in registry.data["plugins"]:
-        if existing["git_url"] == git_url:
-            raise ValueError(f"Plugin with git URL '{git_url}' already exists (plugin: {existing['id']})")
-        if existing["uuid"] == manifest["uuid"]:
-            raise ValueError(f"Plugin with UUID '{manifest['uuid']}' already exists (plugin: {existing['id']})")
+    # Check for duplicate git URL
+    existing_url = registry.find_by_url(git_url)
+    if existing_url:
+        raise ValueError(f"Plugin with git URL '{git_url}' already exists (plugin: {existing_url['id']})")
+
+    # Check for duplicate UUID
+    existing_uuid = registry.find_by_uuid(manifest["uuid"])
+    if existing_uuid:
+        raise ValueError(f"Plugin with UUID '{manifest['uuid']}' already exists (plugin: {existing_uuid['id']})")
 
     # Check for duplicate ID
     if registry.find_plugin(plugin_id):

@@ -56,6 +56,32 @@ def test_find_plugin(temp_registry):
     assert not_found is None
 
 
+def test_find_by_url(temp_registry):
+    """Test finding plugin by git URL."""
+    plugin = {"id": "test-plugin", "name": "Test", "git_url": "https://github.com/user/plugin"}
+    temp_registry.add_plugin(plugin)
+
+    found = temp_registry.find_by_url("https://github.com/user/plugin")
+    assert found is not None
+    assert found["id"] == "test-plugin"
+
+    not_found = temp_registry.find_by_url("https://github.com/user/nonexistent")
+    assert not_found is None
+
+
+def test_find_by_uuid(temp_registry):
+    """Test finding plugin by UUID."""
+    plugin = {"id": "test-plugin", "name": "Test", "uuid": "6de6a3bf-a524-42b6-83cb-a36b2ec2e246"}
+    temp_registry.add_plugin(plugin)
+
+    found = temp_registry.find_by_uuid("6de6a3bf-a524-42b6-83cb-a36b2ec2e246")
+    assert found is not None
+    assert found["id"] == "test-plugin"
+
+    not_found = temp_registry.find_by_uuid("ffffffff-ffff-ffff-ffff-ffffffffffff")
+    assert not_found is None
+
+
 def test_remove_plugin(temp_registry):
     """Test removing plugin."""
     plugin = {"id": "test-plugin", "name": "Test"}

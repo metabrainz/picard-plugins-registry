@@ -72,6 +72,34 @@ class Registry:
                 return plugin
         return None
 
+    def find_by_url(self, git_url: str) -> dict[str, Any] | None:
+        """Find plugin by git URL.
+
+        Args:
+            git_url: Git repository URL
+
+        Returns:
+            dict or None: Plugin entry if found
+        """
+        for plugin in self.data["plugins"]:
+            if plugin.get("git_url") == git_url:
+                return plugin
+        return None
+
+    def find_by_uuid(self, uuid: str) -> dict[str, Any] | None:
+        """Find plugin by UUID.
+
+        Args:
+            uuid: Plugin UUID
+
+        Returns:
+            dict or None: Plugin entry if found
+        """
+        for plugin in self.data["plugins"]:
+            if plugin.get("uuid") == uuid:
+                return plugin
+        return None
+
     def add_plugin(self, plugin: dict[str, Any]) -> None:
         """Add plugin to registry.
 
