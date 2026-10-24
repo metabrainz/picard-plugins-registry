@@ -328,3 +328,74 @@ def test_cli_plugin_update_all_failure_exit_code(mock_registry, mock_update_all)
     assert exc_info.value.code == 1
     # Updated plugins should still be saved even if another fails
     mock_registry.return_value.save.assert_called_once()
+
+
+@patch(
+    "sys.argv",
+    [
+        "registry",
+        "plugin",
+        "set-keys",
+        "my-plugin",
+        "--key",
+        "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghij",
+    ],
+)
+@patch("registry_lib.cli.set_signing_keys")
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_set_keys(mock_registry, mock_set_keys):
+    """Test plugin set-keys command passes keys to the lib and saves."""
+    mock_set_keys.return_value = {
+        "id": "my-plugin",
+        "name": "My Plugin",
+        "signing_keys": ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghij"],
+    }
+
+    main()
+
+    args, _ = mock_set_keys.call_args
+    assert args[1] == "my-plugin"
+    assert args[2] == ["ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIabcDEFghij"]
+    mock_registry.return_value.save.assert_called_once()
+
+
+@patch("sys.argv", ["registry", "plugin", "set-keys", "my-plugin", "--clear"])
+@patch("registry_lib.cli.set_signing_keys")
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_set_keys_clear(mock_registry, mock_set_keys):
+    """Test plugin set-keys --clear passes None to the lib."""
+    mock_set_keys.return_value = {"id": "my-plugin", "name": "My Plugin"}
+
+    main()
+
+    args, _ = mock_set_keys.call_args
+    assert args[2] is None
+
+
+@patch("sys.argv", ["registry", "plugin", "edit", "my-plugin", "--require-signature"])
+@patch("registry_lib.cli.set_require_signature")
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_edit_require_signature(mock_registry, mock_set_require):
+    """Test plugin edit --require-signature toggles the flag on."""
+    plugin = {"id": "my-plugin", "name": "My Plugin"}
+    mock_registry.return_value.find_plugin.return_value = plugin
+
+    main()
+
+    args, _ = mock_set_require.call_args
+    assert args[1] == "my-plugin"
+    assert args[2] is True
+
+
+@patch("sys.argv", ["registry", "plugin", "edit", "my-plugin", "--no-require-signature"])
+@patch("registry_lib.cli.set_require_signature")
+@patch("registry_lib.cli.Registry")
+def test_cli_plugin_edit_no_require_signature(mock_registry, mock_set_require):
+    """Test plugin edit --no-require-signature toggles the flag off."""
+    plugin = {"id": "my-plugin", "name": "My Plugin"}
+    mock_registry.return_value.find_plugin.return_value = plugin
+
+    main()
+
+    args, _ = mock_set_require.call_args
+    assert args[2] is False

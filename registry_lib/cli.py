@@ -17,6 +17,8 @@ from registry_lib.picard.constants import REGISTRY_TRUST_LEVELS
 from registry_lib.plugin import (
     DEFAULT_REF,
     add_plugin,
+    set_require_signature,
+    set_signing_keys,
     update_all_plugins,
     update_plugin,
 )
@@ -59,6 +61,10 @@ def _print_plugin_details(plugin: dict[str, Any], indent: str = "") -> None:
         print(f"{indent}{colors.dim(f'Long Description[{lang}]:')} ({len(text)} chars)")
     if 'versioning_scheme' in plugin:
         print(f"{indent}{colors.dim('Versioning Scheme:')} {plugin['versioning_scheme']}")
+    if plugin.get('signing_keys'):
+        required = plugin.get('require_signature', False)
+        suffix = ' (required)' if required else ''
+        print(f"{indent}{colors.dim('Signing Keys:')} {len(plugin['signing_keys'])}{suffix}")
     if 'redirect_from' in plugin:
         print(f"{indent}{colors.dim('Redirects from:')} {', '.join(plugin['redirect_from'])}")
     print(f"{indent}{colors.dim('Added:')} {plugin['added_at']}")
@@ -363,10 +369,27 @@ def cmd_plugin_edit(args: argparse.Namespace) -> None:
             plugin["versioning_scheme"] = args.versioning_scheme
         elif "versioning_scheme" in plugin:
             del plugin["versioning_scheme"]
+    if args.require_signature is not None:
+        # set_require_signature validates that keys exist before enabling and
+        # updates the timestamp itself.
+        set_require_signature(registry, args.plugin_id, args.require_signature)
 
     plugin["updated_at"] = now_iso8601()
     registry.save()
     print(colors.green(f"Updated plugin: {plugin['name']} ({plugin['id']})"))
+
+
+def cmd_plugin_set_keys(args: argparse.Namespace) -> None:
+    """Set or clear the trusted signing keys for a plugin."""
+    registry = Registry(args.registry)
+    keys = None if args.clear else list(args.key or [])
+    plugin = set_signing_keys(registry, args.plugin_id, keys)
+    registry.save()
+    count = len(plugin.get("signing_keys", []))
+    if count:
+        print(colors.green(f"Set {count} signing key(s) for {plugin['name']} ({plugin['id']})"))
+    else:
+        print(colors.green(f"Cleared signing keys for {plugin['name']} ({plugin['id']})"))
 
 
 def cmd_plugin_validate_manifest(args: argparse.Namespace) -> None:
@@ -595,7 +618,33 @@ def main() -> None:
         dest="versioning_scheme",
         help="Version tagging scheme: 'semver', 'calver', 'regex:<pattern>', or empty string to remove",
     )
+    edit_parser.add_argument(
+        "--require-signature",
+        dest="require_signature",
+        action=argparse.BooleanOptionalAction,
+        default=None,
+        help="Require a valid signature to install/update (needs signing_keys); --no-require-signature to disable",
+    )
     edit_parser.set_defaults(func=cmd_plugin_edit)
+
+    # plugin set-keys
+    set_keys_parser = plugin_subparsers.add_parser(
+        "set-keys", help="Set or clear the trusted signing keys for a plugin"
+    )
+    set_keys_parser.add_argument("plugin_id", help="Plugin ID")
+    set_keys_parser.add_argument(
+        "--key",
+        action="append",
+        metavar="KEY",
+        help="A trusted signing key ('<ssh-type> <base64-body>' or 'openpgp:<fingerprint>'). "
+        "Repeat to set multiple keys.",
+    )
+    set_keys_parser.add_argument(
+        "--clear",
+        action="store_true",
+        help="Remove all signing keys (and require_signature) from the plugin",
+    )
+    set_keys_parser.set_defaults(func=cmd_plugin_set_keys)
 
     # plugin redirect
     redirect_parser = plugin_subparsers.add_parser("redirect", help="Manage URL redirects for moved plugin")

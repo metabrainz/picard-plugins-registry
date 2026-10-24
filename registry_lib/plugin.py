@@ -9,6 +9,7 @@ from registry_lib.manifest import (
     validate_manifest,
 )
 from registry_lib.picard.constants import REGISTRY_TRUST_LEVELS
+from registry_lib.picard.validator import validate_signing_keys
 from registry_lib.registry import Registry
 from registry_lib.utils import (
     derive_plugin_id,
@@ -199,6 +200,71 @@ def update_plugin(registry: Registry, plugin_id: str, ref: str | None = None) ->
         raise ValueError(f"Plugin {plugin_id} not found")
 
     _apply_manifest_update(plugin, ref)
+    return plugin
+
+
+def set_signing_keys(registry: Registry, plugin_id: str, keys: list[str] | None) -> dict[str, Any]:
+    """Set (replace) the trusted signing keys for a plugin.
+
+    Args:
+        registry: Registry instance
+        plugin_id: Plugin ID to update
+        keys: List of signing keys, or None/empty to remove all keys
+
+    Returns:
+        dict: Updated plugin entry
+
+    Raises:
+        ValueError: If the plugin is not found or any key is malformed
+    """
+    plugin = registry.find_plugin(plugin_id)
+    if not plugin:
+        raise ValueError(f"Plugin {plugin_id} not found")
+
+    cleaned = [k.strip() for k in keys if k.strip()] if keys else []
+    errors = validate_signing_keys(cleaned)
+    if errors:
+        raise ValueError(f"Invalid signing key(s): {', '.join(errors)}")
+
+    if cleaned:
+        plugin["signing_keys"] = cleaned
+    elif "signing_keys" in plugin:
+        del plugin["signing_keys"]
+        # require_signature is meaningless without keys; drop it too.
+        plugin.pop("require_signature", None)
+
+    plugin["updated_at"] = now_iso8601()
+    return plugin
+
+
+def set_require_signature(registry: Registry, plugin_id: str, required: bool) -> dict[str, Any]:
+    """Set whether a plugin requires a valid signature to install/update.
+
+    Args:
+        registry: Registry instance
+        plugin_id: Plugin ID to update
+        required: True to require a valid signature, False to only warn
+
+    Returns:
+        dict: Updated plugin entry
+
+    Raises:
+        ValueError: If the plugin is not found, or require_signature is enabled
+            without any signing_keys configured
+    """
+    plugin = registry.find_plugin(plugin_id)
+    if not plugin:
+        raise ValueError(f"Plugin {plugin_id} not found")
+
+    if required and not plugin.get("signing_keys"):
+        raise ValueError("Cannot require a signature without any signing_keys; add keys first")
+
+    if required:
+        plugin["require_signature"] = True
+    elif "require_signature" in plugin:
+        del plugin["require_signature"]
+
+    plugin["updated_at"] = now_iso8601()
     return plugin
 
 
