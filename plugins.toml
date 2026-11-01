@@ -202,6 +202,30 @@ to 0, e.g. `$decade(1994,0)` will return \"1990s\"."""
 report_bugs_to = "https://todo.sr.ht/~phw/picard-plugins"
 
 [[plugins]]
+id = "deezerart"
+uuid = "c76b1a8c-ea0d-476b-9d31-3552be6e1955"
+name = "Deezerart"
+description = "Download cover art from Deezer."
+git_url = "https://github.com/livingsilver94/picard-deezerart"
+categories = [
+  "coverart",
+]
+trust_level = "community"
+authors = [
+  "Fabio Forni",
+]
+added_at = "2026-11-01T10:46:51Z"
+updated_at = "2026-11-01T10:46:51Z"
+homepage = "https://github.com/livingsilver94/picard-deezerart"
+license = "GPL-3.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-3.0.html"
+report_bugs_to = "https://github.com/livingsilver94/picard-deezerart/issues"
+versioning_scheme = "semver"
+
+[plugins.description_i18n]
+it = "Scarica immagini di copertina da Deezer."
+
+[[plugins]]
 id = "fanarttv"
 uuid = "d80f6f27-b141-438a-b644-fffb752e0ba2"
 name = "fanart.tv cover art"
