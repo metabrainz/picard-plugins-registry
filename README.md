@@ -285,6 +285,116 @@ Display registry statistics by trust level and category:
 registry stats
 ```
 
+### Audit Plugin API Usage
+
+The `audit-api` command answers two different questions, depending on the mode:
+
+- **Conformance (default)** — "Does the plugin obey the documented plugin API?"
+  A Picard v3 plugin should import Picard code only from `picard.plugin3.api`;
+  importing anything else (`picard.ui.*`, `picard.metadata`,
+  `picard.webservice`, …) reaches into Picard internals that may change between
+  releases. This mode reports **every** out-of-API import with a severity and a
+  suggested API replacement.
+- **Breakage (`--check-breakage`)** — "Will the plugin still import on *this*
+  Picard branch?" This clones the Picard source at `--picard-ref` and reports
+  only the out-of-API imports that **no longer resolve** there. It is the right
+  check when validating a Picard refactor (e.g. one that relocates internals)
+  against the existing plugin ecosystem: internals that merely *could* break are
+  ignored; only imports that actually stopped resolving are flagged. Imports
+  inside a `try` / `except ImportError` fallback are treated as intentionally
+  optional and never counted as breakage.
+
+The audit clones each plugin, parses its Python with the `ast` module (so
+comments, strings, multi-line and `TYPE_CHECKING` imports are handled
+correctly).
+
+```bash
+# Conformance: audit all plugins against the current Picard API (latest master)
+registry audit-api
+
+# Audit a single plugin
+registry audit-api additional-artists-details
+
+# Audit against a specific released/tagged Picard version
+registry audit-api --picard-ref release-3.0.3
+
+# Breakage: check all plugins against a Picard branch on a fork
+registry audit-api --check-breakage \
+    --picard-repo myfork/picard --picard-ref my-refactor-branch
+
+# Target a different Picard GitHub repo (owner/repo); default is metabrainz/picard
+registry audit-api --picard-repo myfork/picard --picard-ref my-branch
+
+# Override the plugin ref to check out (default: the plugin's declared ref)
+registry audit-api my-plugin --ref develop
+
+# Audit a local plugin directory directly, without the registry (during development)
+registry audit-api --path ./my-plugin
+registry audit-api --path ./my-plugin --check-breakage \
+    --picard-repo myfork/picard --picard-ref my-refactor-branch
+
+# Reuse clones between runs (faster for repeated local runs)
+registry audit-api --cache-dir ~/.cache/picard-plugin-audit
+
+# Machine-readable report (for CI or further processing)
+registry audit-api --json
+```
+
+In conformance mode the API surface (the names `picard.plugin3.api` exports) is
+fetched from Picard's source for the chosen `--picard-repo` / `--picard-ref`, so
+the audit always checks against the real API of that version. In breakage mode
+the whole Picard source tree at that ref is cloned and each import is resolved
+against it. Both modes exit non-zero when any findings are reported — or when a
+plugin file cannot be parsed, since an unanalyzable file is treated as a problem
+rather than a silent pass — so they can gate CI.
+
+By default each repository is cloned to a temporary directory and removed after.
+Pass `--cache-dir PATH` to keep persistent shallow clones (plugins and, in
+breakage mode, the Picard source) and refresh them on reuse, which speeds up
+repeated local runs.
+
+To audit a plugin that is not in the registry yet — e.g. while developing it —
+pass `--path DIR` to audit a local working directory in place. This skips the
+registry and the clone step entirely; `--path` cannot be combined with a plugin
+id. Both audit modes work with `--path`, so you can check a work-in-progress
+plugin against a specific Picard branch before publishing.
+
+Severities: **high** (`picard.ui.*` and other deep internals), **medium**
+(common cases with a documented API replacement, e.g. `picard.webservice` →
+`api.web_service`), **low** (other internal imports).
+
+In addition to plain imports, the audit flags **literal dynamic imports**
+(`importlib.import_module("picard.x")` / `__import__("picard.x")`), and in
+breakage mode it also checks a plugin's **direct calls** of imported Picard
+functions against the target signature, reporting a call that passes an unknown
+keyword argument or too many positional arguments.
+
+#### Limitations
+
+This is an import/resolution checker, not a full compatibility checker. It is
+deliberately conservative — it prefers missing a problem to raising a false
+alarm — so a clean breakage report means *"no plugin imports or calls anything
+we removed, relocated, or changed the arity of"*, **not** *"no plugin will
+break"*. It cannot detect:
+
+- **Type/value changes** of a name that still exists (e.g. a module-level list
+  becoming a dict, or a constant changing value) — the import still resolves.
+- **Behavioral changes** behind an unchanged signature (different return value,
+  a new exception, in-place vs. copy, changed ordering or units).
+- **Class member changes** — renamed/removed methods or attributes of a class a
+  plugin uses or subclasses; only the top-level class name is tracked.
+- **Method-call compatibility** — only direct function calls of an imported
+  name are signature-checked, not method calls on instances. Signature checks
+  cover only unknown keyword and too-many-positional; "missing required
+  argument" is not reported.
+- **Non-literal dynamic access** — `importlib.import_module(name)` with a
+  computed name, `getattr` on a module, and similar runtime indirection.
+- **Non-Python breakage** — manifest/API-version mismatch, resource layout, Qt
+  `.ui` changes, config option keys, removed signals/slots.
+
+For behavioral and type-level compatibility, run the plugin's own tests against
+the target Picard build.
+
 ### Output Registry
 
 Output the registry in a specific format (useful for conversion or piping):
