@@ -1,7 +1,9 @@
 """Command-line interface."""
 
 import argparse
+import contextlib
 import json
+from pathlib import Path
 import sys
 from typing import Any
 
@@ -9,16 +11,35 @@ import tomli_w
 
 from registry_lib import colors
 from registry_lib.blacklist import add_blacklist
+from registry_lib.clone import CloneError, clone_tree
 from registry_lib.manifest import (
     fetch_manifest,
     validate_manifest,
 )
 from registry_lib.picard.constants import REGISTRY_TRUST_LEVELS
+from registry_lib.picard_api import (
+    API_MODULE,
+    DEFAULT_PICARD_REPO,
+    ApiSurfaceError,
+    PicardSource,
+    fetch_api_surface,
+    picard_clone_url,
+)
 from registry_lib.plugin import (
     DEFAULT_REF,
     add_plugin,
     update_all_plugins,
     update_plugin,
+)
+from registry_lib.plugin_audit import (
+    Finding,
+    PluginAuditResult,
+    Severity,
+    audit_plugin_tree,
+    breaking_findings,
+    resolve_plugin_ref,
+    signature_issues,
+    summarize_severities,
 )
 from registry_lib.registry import Registry
 from registry_lib.utils import now_iso8601
@@ -80,6 +101,262 @@ def get_plugin_or_exit(registry: Registry, plugin_id: str) -> dict[str, Any]:
         print(f"Error: Plugin {plugin_id} not found", file=sys.stderr)
         sys.exit(1)
     return plugin
+
+
+def _shown_findings(result: PluginAuditResult, source: PicardSource | None) -> tuple[Finding, ...]:
+    """Findings to report: breaking ones in breakage mode, all in conformance."""
+    return breaking_findings(result, source) if source is not None else result.findings
+
+
+def _print_audit_result(result: PluginAuditResult, source: PicardSource | None = None) -> None:
+    """Print a human-readable audit result for one plugin.
+
+    If ``source`` is given, this is a *breakage* report: only findings that fail
+    to resolve against ``source`` are shown (plus any incompatible calls), and a
+    clean plugin means all its Picard imports and calls still work on that ref.
+    """
+    findings = _shown_findings(result, source)
+    issues = signature_issues(result, source) if source is not None else ()
+    if not findings and not issues and not result.parse_errors:
+        label = "imports resolve" if source is not None else "clean"
+        print(f"{colors.green('✓')} {colors.dim(result.plugin_id)}: {label} ({result.files_scanned} files)")
+        return
+
+    counts = summarize_severities(findings)
+    noun = "breaking import(s)" if source is not None else "finding(s)"
+    extra = []
+    if issues:
+        extra.append(f"{len(issues)} bad call(s)")
+    if result.parse_errors:
+        extra.append(f"{len(result.parse_errors)} unparsed")
+    suffix = (", " + ", ".join(extra)) if extra else ""
+    print(
+        f"{colors.red('✗')} {colors.dim(result.plugin_id)}: {len(findings)} {noun} "
+        f"[{colors.red(str(counts[Severity.HIGH]) + ' high')}, "
+        f"{colors.yellow(str(counts[Severity.MEDIUM]) + ' medium')}, "
+        f"{counts[Severity.LOW]} low{suffix}] in {result.files_scanned} files"
+    )
+    for f in sorted(findings, key=lambda x: (x.severity.rank, x.file, x.line)):
+        sev = {
+            Severity.HIGH: colors.red("HIGH"),
+            Severity.MEDIUM: colors.yellow("MED "),
+            Severity.LOW: colors.dim("LOW "),
+        }[f.severity]
+        line = f"    {sev} {f.file}:{f.line}  {colors.blue(f.imported)}"
+        if source is not None:
+            line += colors.red("  ✗ does not resolve")
+        elif f.suggestion:
+            line += colors.dim(f"  → {f.suggestion}")
+        print(line)
+    # Calls whose arguments no longer match the target signature.
+    for issue in issues:
+        print(f"    {colors.red('CALL')} {issue.file}:{issue.line}  {colors.blue(issue.callee)}  → {issue.reason}")
+    # An unparseable file cannot be checked, so it counts as a problem, not a pass.
+    for err in result.parse_errors:
+        print(f"    {colors.red('FAIL')} {err.file}: {err.message} (could not analyze)")
+
+
+def _finding_to_dict(f: Finding, source: PicardSource | None) -> dict[str, Any]:
+    data: dict[str, Any] = {
+        "file": f.file,
+        "line": f.line,
+        "imported": f.imported,
+        "kind": f.kind,
+        "severity": f.severity.value,
+        "suggestion": f.suggestion,
+    }
+    if source is not None:
+        data["breaks"] = f.breaks_on(source)
+    return data
+
+
+def _audit_result_to_dict(result: PluginAuditResult, source: PicardSource | None = None) -> dict[str, Any]:
+    findings = _shown_findings(result, source)
+    issues = signature_issues(result, source) if source is not None else ()
+    data: dict[str, Any] = {
+        "plugin_id": result.plugin_id,
+        "files_scanned": result.files_scanned,
+        "ok": not findings and not issues and not result.parse_errors,
+        "severity_counts": {sev.value: n for sev, n in summarize_severities(findings).items()},
+        "findings": [_finding_to_dict(f, source) for f in findings],
+        "parse_errors": [{"file": e.file, "error": e.message} for e in result.parse_errors],
+    }
+    if source is not None:
+        data["signature_issues"] = [
+            {"file": i.file, "line": i.line, "callee": i.callee, "reason": i.reason} for i in issues
+        ]
+    return data
+
+
+def _open_picard_source(args: argparse.Namespace, stack: contextlib.ExitStack) -> PicardSource | None:
+    """In breakage mode, clone the Picard source once and wrap it; else None."""
+    if not args.check_breakage:
+        return None
+    try:
+        tree = stack.enter_context(
+            clone_tree(picard_clone_url(args.picard_repo), args.picard_ref, cache_dir=args.cache_dir)
+        )
+    except CloneError as e:
+        print(
+            colors.red(f"Error: could not clone Picard source {args.picard_repo}@{args.picard_ref}: {e}"),
+            file=sys.stderr,
+        )
+        sys.exit(1)
+    return PicardSource(tree, ref=args.picard_ref, repo=args.picard_repo)
+
+
+def cmd_audit_api(args: argparse.Namespace) -> None:
+    """Audit plugins for use of Picard code outside the plugin API.
+
+    Two modes:
+
+    - Conformance (default): report every out-of-API Picard import a plugin
+      makes. Answers "does the plugin obey the documented plugin API?".
+    - Breakage (``--check-breakage``): clone the Picard source at
+      ``--picard-ref`` from ``--picard-repo`` and report only the imports that
+      no longer resolve there. Answers "will this plugin still import on this
+      Picard branch?" — the signal when validating a Picard refactor.
+
+    The target can be the registry (a plugin id, or all plugins) or, with
+    ``--path``, a local plugin directory — handy during plugin development,
+    before the code is published or added to the registry.
+    """
+    if args.path and args.plugin_id:
+        print(colors.red("Error: give either a plugin id or --path, not both"), file=sys.stderr)
+        sys.exit(1)
+
+    # Resolve the sanctioned API surface once (default: latest master).
+    try:
+        surface = fetch_api_surface(args.picard_ref, repo=args.picard_repo)
+    except ApiSurfaceError as e:
+        print(colors.red(f"Error: {e}"), file=sys.stderr)
+        sys.exit(1)
+
+    results: list[PluginAuditResult] = []
+    clone_failures: list[tuple[str, str]] = []
+
+    with contextlib.ExitStack() as stack:
+        source = _open_picard_source(args, stack)
+        if not args.json:
+            _print_audit_header(args, surface, source)
+
+        if args.path:
+            results.append(_audit_local_path(args.path, surface, source, json_output=args.json))
+        else:
+            results, clone_failures = _audit_registry_plugins(args, surface, source)
+
+        _report_audit_summary(args, surface, source, results, clone_failures)
+
+
+def _audit_local_path(path: str, surface: Any, source: PicardSource | None, *, json_output: bool) -> PluginAuditResult:
+    """Audit a local plugin directory in place (no registry, no clone)."""
+    root = Path(path)
+    if not root.is_dir():
+        print(colors.red(f"Error: plugin path is not a directory: {path}"), file=sys.stderr)
+        sys.exit(1)
+    result = audit_plugin_tree(root.name or str(root), root, surface)
+    if not json_output:
+        _print_audit_result(result, source)
+    return result
+
+
+def _audit_registry_plugins(
+    args: argparse.Namespace, surface: Any, source: PicardSource | None
+) -> tuple[list[PluginAuditResult], list[tuple[str, str]]]:
+    """Audit one or all registry plugins, cloning each at its ref."""
+    registry = Registry(args.registry)
+    if args.plugin_id:
+        plugins = [get_plugin_or_exit(registry, args.plugin_id)]
+    else:
+        plugins = list(registry.data["plugins"])
+
+    results: list[PluginAuditResult] = []
+    clone_failures: list[tuple[str, str]] = []
+    for plugin in plugins:
+        ref = resolve_plugin_ref(plugin, args.ref)
+        try:
+            with clone_tree(plugin["git_url"], ref, cache_dir=args.cache_dir) as tree:
+                result = audit_plugin_tree(plugin["id"], tree, surface)
+        except CloneError as e:
+            clone_failures.append((plugin["id"], str(e)))
+            if not args.json:
+                print(f"{colors.yellow('!')} {colors.dim(plugin['id'])}: clone failed: {e}", file=sys.stderr)
+            continue
+        results.append(result)
+        if not args.json:
+            _print_audit_result(result, source)
+    return results, clone_failures
+
+
+def _print_audit_header(args: argparse.Namespace, surface: Any, source: PicardSource | None) -> None:
+    if source is not None:
+        print(colors.dim(f"Checking plugin imports against Picard source {args.picard_repo}@{args.picard_ref}"))
+    else:
+        print(
+            colors.dim(
+                f"Auditing against {API_MODULE} @ {args.picard_repo}@{surface.ref} "
+                f"({len(surface.exported_names)} exported names)"
+            )
+        )
+
+
+def _report_audit_summary(
+    args: argparse.Namespace,
+    surface: Any,
+    source: PicardSource | None,
+    results: list[PluginAuditResult],
+    clone_failures: list[tuple[str, str]],
+) -> None:
+    """Print the final summary and exit non-zero if there are problems."""
+    total_findings = sum(len(_shown_findings(r, source)) for r in results)
+    total_unparsed = sum(len(r.parse_errors) for r in results)
+    total_bad_calls = sum(len(signature_issues(r, source)) for r in results) if source is not None else 0
+    # A plugin is "affected" if it has shown findings, incompatible calls, or any
+    # unparseable file: an unanalyzable file is a problem, not a silent pass.
+    plugins_affected = sum(
+        1
+        for r in results
+        if _shown_findings(r, source) or r.parse_errors or (source is not None and signature_issues(r, source))
+    )
+
+    if args.json:
+        payload: dict[str, Any] = {
+            "mode": "breakage" if source is not None else "conformance",
+            "picard_repo": args.picard_repo,
+            "picard_ref": surface.ref,
+            "api_module": surface.module,
+            "exported_names": sorted(surface.exported_names),
+            "plugins_audited": len(results),
+            "plugins_with_findings": plugins_affected,
+            "total_findings": total_findings,
+            "total_unparsed": total_unparsed,
+            "total_bad_calls": total_bad_calls,
+            "results": [_audit_result_to_dict(r, source) for r in results],
+            "clone_failures": [{"plugin_id": p, "error": e} for p, e in clone_failures],
+        }
+        print(json.dumps(payload, indent=2, sort_keys=True))
+    else:
+        print()
+        if source is not None:
+            print(
+                f"{plugins_affected}/{len(results)} plugin(s) have imports that break on "
+                f"{args.picard_repo}@{surface.ref}; {total_findings} breaking import(s) total."
+            )
+        else:
+            print(
+                f"{plugins_affected}/{len(results)} plugin(s) use Picard code outside the API; "
+                f"{total_findings} finding(s) total."
+            )
+        if total_bad_calls:
+            print(colors.red(f"{total_bad_calls} call(s) are incompatible with the target function signatures."))
+        if total_unparsed:
+            print(colors.red(f"{total_unparsed} file(s) could not be analyzed (syntax/read errors)."))
+        if clone_failures:
+            print(colors.yellow(f"{len(clone_failures)} plugin(s) could not be cloned."))
+
+    # Non-zero exit on any findings, incompatible calls, or unparseable files.
+    if total_findings or total_unparsed or total_bad_calls:
+        sys.exit(1)
 
 
 def cmd_validate(args: argparse.Namespace) -> None:
@@ -689,6 +966,52 @@ def main() -> None:
     # Validate command
     validate_parser = subparsers.add_parser("validate", help="Validate registry")
     validate_parser.set_defaults(func=cmd_validate)
+
+    # Audit API command
+    audit_parser = subparsers.add_parser(
+        "audit-api",
+        help="Audit plugins for use of Picard code outside the plugin API",
+    )
+    audit_parser.add_argument(
+        "plugin_id",
+        nargs="?",
+        help="Plugin ID to audit (default: all registry plugins)",
+    )
+    audit_parser.add_argument(
+        "--path",
+        default=None,
+        help="Audit a local plugin directory directly, bypassing the registry (useful during development)",
+    )
+    audit_parser.add_argument(
+        "--picard-ref",
+        default="master",
+        help="Picard ref defining the API surface / source: branch (default: master), tag/release, or commit",
+    )
+    audit_parser.add_argument(
+        "--picard-repo",
+        default=DEFAULT_PICARD_REPO,
+        help=f"Picard GitHub repo as owner/repo (default: {DEFAULT_PICARD_REPO}); use a fork to target its branches",
+    )
+    audit_parser.add_argument(
+        "--check-breakage",
+        action="store_true",
+        help=(
+            "Clone the Picard source at --picard-ref and report only imports that no longer "
+            "resolve there (breakage audit), instead of all out-of-API imports (conformance audit)"
+        ),
+    )
+    audit_parser.add_argument(
+        "--ref",
+        default=None,
+        help="Override the git ref to check out for each plugin (default: the plugin's declared ref or default branch)",
+    )
+    audit_parser.add_argument(
+        "--cache-dir",
+        default=None,
+        help="Persist and reuse plugin clones in this directory (default: clone to a temp dir, removed after)",
+    )
+    audit_parser.add_argument("--json", action="store_true", help="Output a machine-readable JSON report")
+    audit_parser.set_defaults(func=cmd_audit_api)
 
     # Stats command
     stats_parser = subparsers.add_parser("stats", help="Show registry statistics")
