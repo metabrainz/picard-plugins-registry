@@ -108,6 +108,38 @@ fr = "Ce plugin fournit des variables spécifiques aux albums et aux pistes, des
 zh_CN = "此插件为文件命名脚本提供专门的专辑和音轨变量。"
 
 [[plugins]]
+id = "apple-cover-art"
+uuid = "7068e4dd-c75a-4d4f-b041-7ba757794a9f"
+name = "Apple Music cover art"
+description = "Fetch front cover art from the public iTunes Search API, no account or API key needed"
+git_url = "https://github.com/MosheWelcher/picard-apple-cover-art"
+categories = [
+  "coverart",
+]
+trust_level = "community"
+authors = [
+  "Moshe Welcher",
+]
+added_at = "2026-11-02T08:45:03Z"
+updated_at = "2026-11-02T08:45:03Z"
+homepage = "https://github.com/MosheWelcher/picard-apple-cover-art"
+license = "GPL-2.0-or-later"
+license_url = "https://www.gnu.org/licenses/gpl-2.0.html"
+long_description = """
+Fetches front cover art from the public iTunes Search API (itunes.apple.com), with images served from mzstatic.com.
+
+Needs no account and no API key. Useful as a fallback when the Cover Art Archive has no image for a release, or is unreachable.
+
+Because iTunes is searched by artist and album text rather than MusicBrainz ID, each candidate is scored on title, edition, artist and track count, and only confident matches are accepted. A wrong cover is never silently attached.
+
+Enable it under Options > Cover Art and place it after Cover Art Archive so it is only used when no front cover was found."""
+maintainers = [
+  "Moshe Welcher",
+]
+report_bugs_to = "https://github.com/MosheWelcher/picard-apple-cover-art/issues"
+versioning_scheme = "semver"
+
+[[plugins]]
 id = "combine-performer-tags"
 uuid = "4779bcaf-1bda-4580-8c55-1fbe28771ce8"
 name = "Combine Performer Tags"
